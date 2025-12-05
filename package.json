@@ -1,0 +1,15 @@
+{
+  "name": "school-scheduling-system",
+  "version": "1.0.0",
+  "description": "School Scheduling System - Full Stack",
+  "private": true,
+  "workspaces": [
+    "backend",
+    "frontend/scheduling"
+  ],
+  "scripts": {
+    "start": "cd backend && node server.js",
+    "dev:backend": "cd backend && npm run dev",
+    "dev:frontend": "cd frontend/scheduling && npm run dev"
+  }
+}
