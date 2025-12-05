@@ -52,7 +52,7 @@ function TeacherDashboard() {
         // Try workload API first for authoritative totals
         let workloadData = null;
         try {
-          const wlRes = await axios.get(`http://localhost:5000/api/workload/teacher/${teacherId}`, { signal });
+          const wlRes = await axios.get(`https://school-scheduling-system-production.up.railway.app/api/workload/teacher/${teacherId}`, { signal });
           if (wlRes && wlRes.data) {
             // Response is wrapped in { success, data: {...} }
             workloadData = wlRes.data.data || wlRes.data;
@@ -73,7 +73,7 @@ function TeacherDashboard() {
           teacherSubjects = workloadData.teachingAssignments || [];
         } else {
           // Fallback: fetch offerings (which have assignedTeachers) and compute assigned subjects/units locally
-          const offRes = await axios.get("http://localhost:5000/api/offerings", { signal });
+          const offRes = await axios.get("https://school-scheduling-system-production.up.railway.app/api/offerings", { signal });
           const allOfferings = Array.isArray(offRes.data) ? offRes.data : [];
 
           // Filter offerings to those assigned to this teacher
@@ -95,7 +95,7 @@ function TeacherDashboard() {
           );
 
           // Calculate SCHEDULE UNITS from schedule events
-          const schedRes = await axios.get(`http://localhost:5000/api/schedules/by-teacher/${teacherId}`, { signal });
+          const schedRes = await axios.get(`https://school-scheduling-system-production.up.railway.app/api/schedules/by-teacher/${teacherId}`, { signal });
           const schedules = Array.isArray(schedRes.data) ? schedRes.data : [];
 
           let totalMinutes = 0;
@@ -149,13 +149,13 @@ function TeacherDashboard() {
       formData.append("profileImage", file);
 
       const res = await axios.post(
-        `http://localhost:5000/api/teachers/${user._id}/upload-profile`,
+        `https://school-scheduling-system-production.up.railway.app/api/teachers/${user._id}/upload-profile`,
         formData,
         { headers: { "Content-Type": "multipart/form-data" } }
       );
 
       if (res.data?.imageUrl) {
-        setProfileImage(`http://localhost:5000${res.data.imageUrl}`);
+        setProfileImage(`https://school-scheduling-system-production.up.railway.app${res.data.imageUrl}`);
       }
     } catch (err) {
       console.error("Upload failed:", err);

@@ -26,7 +26,7 @@ const ScheduleRecycler = ({ show, onClose, onSuccess, targetAcademicYear, target
   const fetchAvailableSchedules = async () => {
     try {
       setLoading(true);
-      const response = await axios.get('http://localhost:5000/api/schedules/recyclable');
+      const response = await axios.get('https://school-scheduling-system-production.up.railway.app/api/schedules/recyclable');
       setAvailableSchedules(response.data);
     } catch (error) {
       console.error('Error fetching recyclable schedules:', error);
@@ -38,7 +38,7 @@ const ScheduleRecycler = ({ show, onClose, onSuccess, targetAcademicYear, target
 
   const fetchTeachers = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/users?role=teacher');
+      const response = await axios.get('https://school-scheduling-system-production.up.railway.app/api/users?role=teacher');
       setTeachers(response.data);
       
       // Fetch teacher workloads for target semester
@@ -55,7 +55,7 @@ const ScheduleRecycler = ({ show, onClose, onSuccess, targetAcademicYear, target
       const workloadPromises = teachers.map(async (teacher) => {
         try {
           const response = await axios.get(
-            `http://localhost:5000/api/workload/teacher/${teacher._id}?academicYear=${targetAcademicYear}&semester=${targetSemester}`
+            `https://school-scheduling-system-production.up.railway.app/api/workload/teacher/${teacher._id}?academicYear=${targetAcademicYear}&semester=${targetSemester}`
           );
           return { teacherId: teacher._id, workload: response.data };
         } catch (error) {
@@ -80,7 +80,7 @@ const ScheduleRecycler = ({ show, onClose, onSuccess, targetAcademicYear, target
       setSelectedSchedule(schedule);
       
       // Fetch detailed schedule data including subjects and current teacher assignments
-      const response = await axios.get(`http://localhost:5000/api/schedules/${schedule._id}/detailed`);
+      const response = await axios.get(`https://school-scheduling-system-production.up.railway.app/api/schedules/${schedule._id}/detailed`);
       setScheduleData(response.data);
       
       // Initialize teacher mappings with current assignments
@@ -191,7 +191,7 @@ const ScheduleRecycler = ({ show, onClose, onSuccess, targetAcademicYear, target
         }))
       };
 
-      const response = await axios.post('http://localhost:5000/api/schedules/recycle', recyclingData);
+      const response = await axios.post('https://school-scheduling-system-production.up.railway.app/api/schedules/recycle', recyclingData);
       
       Swal.fire({
         title: 'Schedule Recycled Successfully!',

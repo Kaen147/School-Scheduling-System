@@ -90,7 +90,7 @@ function EditSubjectModal({
       const workloadPromises = teachers.map(async (teacher) => {
         try {
           const response = await axios.get(
-            `http://localhost:5000/api/workload/teacher/${teacher._id}?academicYear=${formData.academicYear}&semester=${formData.semester}`
+            `https://school-scheduling-system-production.up.railway.app/api/workload/teacher/${teacher._id}?academicYear=${formData.academicYear}&semester=${formData.semester}`
           );
           return { teacherId: teacher._id, workload: response.data };
         } catch (error) {
@@ -281,7 +281,7 @@ function EditSubjectModal({
     if (field === "teacherId" && value) {
       // Validate before assigning teacher
       try {
-        const response = await axios.post("http://localhost:5000/api/workload/validate-assignment", {
+        const response = await axios.post("https://school-scheduling-system-production.up.railway.app/api/workload/validate-assignment", {
           teacherId: value,
           subjectId: subject.subjectId._id,
           academicYear: formData.academicYear,
@@ -313,7 +313,7 @@ function EditSubjectModal({
             if (result.isConfirmed) {
               // User confirmed overload - set teacher as overloaded
               try {
-                const overloadResponse = await axios.post(`http://localhost:5000/api/workload/teacher/${value}/overload`, {
+                const overloadResponse = await axios.post(`https://school-scheduling-system-production.up.railway.app/api/workload/teacher/${value}/overload`, {
                   isOverloaded: true
                 });
                 
@@ -432,7 +432,7 @@ function EditSubjectModal({
               previousTeacherIds
             });
             
-            const validation = await axios.post("http://localhost:5000/api/workload/validate-assignment", {
+            const validation = await axios.post("https://school-scheduling-system-production.up.railway.app/api/workload/validate-assignment", {
               teacherId: teacher.teacherId,
               subjectId: subject.subjectId._id,
               academicYear: formData.academicYear,
@@ -467,7 +467,7 @@ function EditSubjectModal({
                 if (result.isConfirmed) {
                   // User confirmed overload - set teacher as overloaded
                   try {
-                    const overloadResponse = await axios.post(`http://localhost:5000/api/workload/teacher/${teacher.teacherId}/overload`, {
+                    const overloadResponse = await axios.post(`https://school-scheduling-system-production.up.railway.app/api/workload/teacher/${teacher.teacherId}/overload`, {
                       isOverloaded: true
                     });
                     
@@ -525,7 +525,7 @@ function EditSubjectModal({
       };
       
       await axios.patch(
-        `http://localhost:5000/api/offerings/${subject._id}`,
+        `https://school-scheduling-system-production.up.railway.app/api/offerings/${subject._id}`,
         offeringPayload
       );
       
@@ -552,7 +552,7 @@ function EditSubjectModal({
     if (result.isConfirmed) {
       try {
         setLoading(true);
-        await axios.delete(`http://localhost:5000/api/subjects/${subject._id}`);
+        await axios.delete(`https://school-scheduling-system-production.up.railway.app/api/subjects/${subject._id}`);
         onSuccess("Subject Deleted!");
         onClose();
       } catch (err) {

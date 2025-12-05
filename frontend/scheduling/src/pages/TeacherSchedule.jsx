@@ -71,7 +71,7 @@ function TeacherSchedule({ teacherId: propTeacherId, hideControls = false }) {
         setIsLoading(true);
         console.log('TeacherSchedule: Fetching schedule for teacherId:', teacherId);
         
-        const response = await fetch(`http://localhost:5000/api/schedules/by-teacher/${teacherId}`);
+        const response = await fetch(`https://school-scheduling-system-production.up.railway.app/api/schedules/by-teacher/${teacherId}`);
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }

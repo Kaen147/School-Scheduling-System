@@ -34,7 +34,7 @@ function AddSubjectModal({ show, onClose, onSuccess, courses = [] }) {
           academicYear: academicYear
         }).toString();
 
-        const res = await fetch(`http://localhost:5000/api/offerings?${query}`);
+        const res = await fetch(`https://school-scheduling-system-production.up.railway.app/api/offerings?${query}`);
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const data = await res.json();
         allOfferings.push(...(Array.isArray(data) ? data : []));
@@ -148,7 +148,7 @@ function AddSubjectModal({ show, onClose, onSuccess, courses = [] }) {
         };
 
         let createdSubject;
-        const subjectRes = await fetch("http://localhost:5000/api/subjects", {
+        const subjectRes = await fetch("https://school-scheduling-system-production.up.railway.app/api/subjects", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(subjectPayload)
@@ -179,7 +179,7 @@ function AddSubjectModal({ show, onClose, onSuccess, courses = [] }) {
           isActive: true
         };
 
-        const offeringRes = await fetch("http://localhost:5000/api/offerings", {
+        const offeringRes = await fetch("https://school-scheduling-system-production.up.railway.app/api/offerings", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(offeringPayload)

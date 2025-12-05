@@ -42,7 +42,7 @@ function AddCourseModal({ show, onClose, onSuccess }) {
 
     setLoading(true);
     try {
-      const response = await fetch("http://localhost:5000/api/courses", {
+      const response = await fetch("https://school-scheduling-system-production.up.railway.app/api/courses", {
         method: "POST",
         headers: { "Content-Type": "application/json", Accept: "application/json" },
         body: JSON.stringify({

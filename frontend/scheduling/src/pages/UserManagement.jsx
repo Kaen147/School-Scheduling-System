@@ -30,7 +30,7 @@ function UserManagement() {
       setLoading(true);
       setError(null);
 
-      const response = await fetch("http://localhost:5000/api/users");
+      const response = await fetch("https://school-scheduling-system-production.up.railway.app/api/users");
 
       if (!response.ok) {
         throw new Error(`Failed to fetch users: ${response.status}`);
@@ -49,7 +49,7 @@ function UserManagement() {
           const teacherId = teacher.id || teacher._id;
           
           // Fetch offerings to calculate assignment units
-          const offeringsRes = await axios.get("http://localhost:5000/api/offerings");
+          const offeringsRes = await axios.get("https://school-scheduling-system-production.up.railway.app/api/offerings");
           const allOfferings = Array.isArray(offeringsRes.data) ? offeringsRes.data : [];
 
           // Filter offerings assigned to this teacher
@@ -136,7 +136,7 @@ function UserManagement() {
     try {
       const updateData = { status: newStatus };
 
-      const res = await fetch(`http://localhost:5000/api/users/${user._id}`, {
+      const res = await fetch(`https://school-scheduling-system-production.up.railway.app/api/users/${user._id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(updateData),
@@ -170,7 +170,7 @@ function UserManagement() {
     }
 
     try {
-      const res = await fetch(`http://localhost:5000/api/users/${user._id}`, {
+      const res = await fetch(`https://school-scheduling-system-production.up.railway.app/api/users/${user._id}`, {
         method: "DELETE",
       });
 

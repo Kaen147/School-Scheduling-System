@@ -15,7 +15,7 @@ export const showDeleteScheduleModal = async (scheduleId, scheduleName, onSucces
 
   if (result.isConfirmed) {
     try {
-      await axios.delete(`http://localhost:5000/api/schedules/${scheduleId}`);
+      await axios.delete(`https://school-scheduling-system-production.up.railway.app/api/schedules/${scheduleId}`);
 
       Swal.fire({
         icon: "success",

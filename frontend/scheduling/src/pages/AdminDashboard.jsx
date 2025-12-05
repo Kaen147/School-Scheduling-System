@@ -28,18 +28,18 @@ function AdminDashboard() {
   const fetchDashboardData = async () => {
     try {
       const teachersRes = await fetch(
-        "http://localhost:5000/api/users/teachers"
+        "https://school-scheduling-system-production.up.railway.app/api/users/teachers"
       );
       const teachersData = await teachersRes.json();
       setTeachers(teachersData);
 
       // Student listing removed (student functionality disabled)
 
-      const coursesRes = await axios.get("http://localhost:5000/api/courses");
+      const coursesRes = await axios.get("https://school-scheduling-system-production.up.railway.app/api/courses");
       setCourses(coursesRes.data);
 
       const schedulesRes = await axios.get(
-        "http://localhost:5000/api/schedules"
+        "https://school-scheduling-system-production.up.railway.app/api/schedules"
       );
       setSchedules(schedulesRes.data);
     } catch (err) {

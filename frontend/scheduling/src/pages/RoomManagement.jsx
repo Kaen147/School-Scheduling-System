@@ -20,7 +20,7 @@ function RoomManagement() {
   const fetchRooms = async () => {
     try {
       setLoading(true);
-      const res = await axios.get("http://localhost:5000/api/rooms");
+      const res = await axios.get("https://school-scheduling-system-production.up.railway.app/api/rooms");
       setRooms(res.data || []);
       setError(null);
     } catch (err) {
@@ -62,7 +62,7 @@ function RoomManagement() {
     });
     if (!resp.isConfirmed) return;
     try {
-      await axios.delete(`http://localhost:5000/api/rooms/${room._id}`);
+      await axios.delete(`https://school-scheduling-system-production.up.railway.app/api/rooms/${room._id}`);
       Swal.fire({ icon: 'success', title: 'Deleted', timer: 1200, showConfirmButton: false });
       fetchRooms();
     } catch (err) {
@@ -83,7 +83,7 @@ function RoomManagement() {
     if (!resp.isConfirmed) return;
 
     try {
-      await axios.put(`http://localhost:5000/api/rooms/${room._id}`, { isActive: !room.isActive });
+      await axios.put(`https://school-scheduling-system-production.up.railway.app/api/rooms/${room._id}`, { isActive: !room.isActive });
       Swal.fire({ icon: 'success', title: room.isActive ? 'Marked inactive' : 'Activated', timer: 1200, showConfirmButton: false });
       fetchRooms();
     } catch (err) {
@@ -105,10 +105,10 @@ function RoomManagement() {
   const handleSave = async (form) => {
     try {
       if (editingRoom) {
-        await axios.put(`http://localhost:5000/api/rooms/${editingRoom._id}`, form);
+        await axios.put(`https://school-scheduling-system-production.up.railway.app/api/rooms/${editingRoom._id}`, form);
         Swal.fire({ icon: 'success', title: 'Updated', timer: 1200, showConfirmButton: false });
       } else {
-        await axios.post(`http://localhost:5000/api/rooms`, form);
+        await axios.post(`https://school-scheduling-system-production.up.railway.app/api/rooms`, form);
         Swal.fire({ icon: 'success', title: 'Created', timer: 1200, showConfirmButton: false });
       }
       closeModal();

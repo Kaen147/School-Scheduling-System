@@ -41,7 +41,7 @@ function CoursesPage() {
     setLoading(true);
     setError(null);
     try {
-      const res = await fetch("http://localhost:5000/api/courses");
+      const res = await fetch("https://school-scheduling-system-production.up.railway.app/api/courses");
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const data = await res.json();
       setCourses(Array.isArray(data) ? data : []);
@@ -70,7 +70,7 @@ function CoursesPage() {
       if (filterSemester) params.append("semester", filterSemester);
       if (academicYear) params.append("academicYear", academicYear); // NEW!
 
-      const res = await fetch(`http://localhost:5000/api/offerings?${params}`); // CHANGED endpoint
+      const res = await fetch(`https://school-scheduling-system-production.up.railway.app/api/offerings?${params}`); // CHANGED endpoint
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const data = await res.json();
 
@@ -140,7 +140,7 @@ function CoursesPage() {
     if (!result.isConfirmed) return;
 
     try {
-      const res = await fetch(`http://localhost:5000/api/courses/${course._id}`, {
+      const res = await fetch(`https://school-scheduling-system-production.up.railway.app/api/courses/${course._id}`, {
         method: "DELETE"
       });
 

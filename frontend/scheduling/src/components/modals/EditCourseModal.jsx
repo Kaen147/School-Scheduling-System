@@ -52,7 +52,7 @@ function EditCourseModal({ show, onClose, onSuccess, course }) {
     if (!course?._id) return;
     try {
       const response = await fetch(
-        `http://localhost:5000/api/courses/${course._id}/usage`,
+        `https://school-scheduling-system-production.up.railway.app/api/courses/${course._id}/usage`,
         { headers: { Accept: "application/json" } }
       );
 
@@ -110,7 +110,7 @@ function EditCourseModal({ show, onClose, onSuccess, course }) {
 
     try {
       const response = await fetch(
-        `http://localhost:5000/api/courses/${course._id}`,
+        `https://school-scheduling-system-production.up.railway.app/api/courses/${course._id}`,
         {
           method: "PUT",
           headers: {
@@ -190,7 +190,7 @@ function EditCourseModal({ show, onClose, onSuccess, course }) {
 
     try {
       const response = await fetch(
-        `http://localhost:5000/api/courses/${course._id}`,
+        `https://school-scheduling-system-production.up.railway.app/api/courses/${course._id}`,
         {
           method: "DELETE",
           headers: { Accept: "application/json" },

@@ -30,7 +30,7 @@ const ConflictChecker = ({
         ...teachers.map(async (teacher) => {
           if (!teacher.teacherId) return null;
           try {
-            const response = await axios.post('http://localhost:5000/api/workload/check-conflicts', {
+            const response = await axios.post('https://school-scheduling-system-production.up.railway.app/api/workload/check-conflicts', {
               teacherId: teacher.teacherId,
               academicYear,
               semester,
@@ -53,7 +53,7 @@ const ConflictChecker = ({
         ...rooms.map(async (room) => {
           if (!room.roomId) return null;
           try {
-            const response = await axios.post('http://localhost:5000/api/rooms/check-conflicts', {
+            const response = await axios.post('https://school-scheduling-system-production.up.railway.app/api/rooms/check-conflicts', {
               roomId: room.roomId,
               academicYear,
               semester,

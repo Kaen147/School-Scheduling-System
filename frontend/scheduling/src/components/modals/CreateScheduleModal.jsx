@@ -150,7 +150,7 @@ export const showCreateScheduleModal = async (courses, navigate) => {
 
         try {
           const offeringsRes = await axios.get(
-            `http://localhost:5000/api/offerings?courseId=${courseId}&yearLevel=${yearLevel}&semester=${semester}`
+            `https://school-scheduling-system-production.up.railway.app/api/offerings?courseId=${courseId}&yearLevel=${yearLevel}&semester=${semester}`
           );
 
           if (!offeringsRes.data || offeringsRes.data.length === 0) {
@@ -209,7 +209,7 @@ export const showCreateScheduleModal = async (courses, navigate) => {
       // Fetch the academic year options
       try {
         const offeringsRes = await axios.get(
-          `http://localhost:5000/api/offerings?courseId=${courseId}&yearLevel=${yearLevel}&semester=${semester}`
+          `https://school-scheduling-system-production.up.railway.app/api/offerings?courseId=${courseId}&yearLevel=${yearLevel}&semester=${semester}`
         );
         
         if (!offeringsRes.data || offeringsRes.data.length === 0) {
