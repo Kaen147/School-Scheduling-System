@@ -89,7 +89,7 @@ subjectSchema.methods.validateScheduleHours = function(scheduledHours) {
 };
 
 // Index for better query performance
-subjectSchema.index({ code: 1 });
+// Note: code field already has unique: true index, no need to duplicate
 subjectSchema.index({ courses: 1, yearLevel: 1, semester: 1 });
 subjectSchema.index({ 'assignedTeachers.teacherId': 1 });
 

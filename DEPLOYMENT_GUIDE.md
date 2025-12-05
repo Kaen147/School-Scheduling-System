@@ -1,4 +1,4 @@
-# 🚀 Deploy to Vercel - Complete Guide
+gi# 🚀 Deploy to Vercel - Complete Guide
 
 > Your School Scheduling System goes live! Access it from ANY device worldwide 🌍
 
