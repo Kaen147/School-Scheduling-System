@@ -22,7 +22,18 @@ const MONGODBURL =
   process.env.MONGODB_URI ||
   "mongodb://localhost:27017/yourdb";
 
-app.use(cors());
+// Configure CORS for production
+const corsOptions = {
+  origin: [
+    'http://localhost:5173',      // Local development (Vite default port)
+    'http://localhost:3000',      // Alternative local port
+    process.env.FRONTEND_URL || '*' // Production frontend from env variable
+  ],
+  credentials: true,              // Allow cookies/auth headers
+  optionsSuccessStatus: 200       // For legacy browsers
+};
+
+app.use(cors(corsOptions));
 app.use(express.json());
 
 // Mount routes
