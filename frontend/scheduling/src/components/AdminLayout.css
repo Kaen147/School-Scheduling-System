@@ -1,0 +1,28 @@
+.admin-layout {
+  display: flex;
+  min-height: 100vh;
+  background-color: #f9fafb;
+}
+
+.admin-main {
+  flex: 1;
+  padding: 2rem;
+  /* Offset for fixed admin sidebar (see NavBarAdmin.css width) */
+  margin-left: 295px;
+  overflow-y: auto;
+}
+
+/* Match sidebar responsive widths */
+@media (max-width: 1024px) {
+  .admin-main {
+    margin-left: 230px;
+  }
+}
+
+/* On small screens the sidebar is hidden off-canvas by default */
+@media (max-width: 768px) {
+  .admin-main {
+    margin-left: 0;
+    padding: 1rem;
+  }
+}

@@ -1,0 +1,663 @@
+/* =====================
+   WRAPPER STYLES
+   ===================== */
+.teacher-schedule-wrapper {
+  padding: 20px;
+  font-family: 'Inter', 'Arial', sans-serif;
+}
+
+/* =====================
+   MAIN CONTAINER STYLES
+   ===================== */
+.teacher-schedule-container {
+  background-color: #f9fafb;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  border: 1px solid #e5e7eb;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.schedule-title {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #111827;
+  margin: 0 0 20px 0;
+  text-align: center;
+}
+
+/* =====================
+   PRINT BUTTON STYLES
+   ===================== */
+.print-button {
+  background-color: #2563eb;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 14px;
+  display: block;
+  margin: 0 auto 15px;
+  transition: background-color 0.2s ease;
+}
+
+.print-button:hover {
+  background-color: #1d4ed8;
+}
+
+/* =====================
+   TABLE STYLES
+   ===================== */
+.table-wrapper {
+  overflow-x: auto;
+}
+
+.teacher-schedule-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: center;
+  font-size: 13px;
+  background-color: white;
+}
+
+.teacher-schedule-table th {
+  background-color: #1e40af;
+  color: white;
+  font-weight: 600;
+  padding: 12px 8px;
+  border: 1px solid #1e3a8a;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.teacher-schedule-table td {
+  border: 1px solid #e5e7eb;
+  vertical-align: middle;
+  min-width: 140px;
+  padding: 4px;
+  background-color: #ffffff;
+}
+
+.time-column {
+  background-color: #1e3a8a;
+  min-width: 90px;
+}
+
+/* =====================
+   EVENT CARD STYLES
+   ===================== */
+.event-card {
+  background-color: #dbeafe;
+  border: 2px solid #3b82f6;
+  border-radius: 8px;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  line-height: 1.4;
+  height: 100%;
+  min-height: 60px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.event-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.event-card.lab {
+  background-color: #fef3c7;
+  border: 2px solid #f59e0b;
+}
+
+.subject-code {
+  font-weight: 700;
+  color: #111827;
+  font-size: 13px;
+  margin-bottom: 4px;
+}
+
+.subject-name {
+  font-size: 11px;
+  color: #374151;
+  margin-bottom: 4px;
+  font-weight: 500;
+}
+
+.time-range {
+  font-size: 10px;
+  color: #1f2937;
+  font-weight: 600;
+  margin-bottom: 4px;
+  background-color: rgba(255, 255, 255, 0.5);
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.extra-info {
+  font-size: 10px;
+  color: #6b7280;
+}
+
+/* =====================
+   EMPTY SLOT
+   ===================== */
+.empty-slot {
+  color: #d1d5db;
+  font-size: 12px;
+}
+
+/* =====================
+   TIME CELL
+   ===================== */
+.time-cell {
+  font-weight: 600;
+  font-size: 12px;
+  color: #374151;
+  background-color: #f3f4f6;
+  border: 1px solid #d1d5db;
+  padding: 8px;
+}
+
+/* =====================
+   LOADING STATE
+   ===================== */
+.schedule-loading {
+  text-align: center;
+  padding: 40px;
+  font-size: 16px;
+  color: #6b7280;
+}
+
+/* =====================
+   REPORT STYLES
+   ===================== */
+.report-header {
+  text-align: center;
+  margin-bottom: 20px;
+  border-bottom: 2px solid #1f2937;
+  padding-bottom: 15px;
+}
+
+.school-header h1 {
+  font-size: 24px;
+  font-weight: bold;
+  color: #1f2937;
+  margin: 0 0 5px 0;
+}
+
+.school-header h2 {
+  font-size: 18px;
+  color: #374151;
+  margin: 0;
+  font-weight: 600;
+}
+
+.teacher-info {
+  margin-top: 15px;
+  text-align: left;
+  display: inline-block;
+}
+
+.info-row {
+  margin-bottom: 5px;
+}
+
+.info-row .label {
+  font-weight: 600;
+  color: #374151;
+  margin-right: 10px;
+  min-width: 120px;
+  display: inline-block;
+}
+
+.info-row .value {
+  color: #111827;
+}
+
+/* Report Summary */
+.report-summary {
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 2px solid #1f2937;
+}
+
+.summary-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+  margin-bottom: 25px;
+}
+
+.summary-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 12px;
+  background-color: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+}
+
+.summary-label {
+  font-weight: 600;
+  color: #374151;
+}
+
+.summary-value {
+  font-weight: bold;
+  color: #1f2937;
+}
+
+.signature-section {
+  margin-top: 40px;
+  text-align: right;
+}
+
+.signature-line {
+  width: 200px;
+  border-bottom: 1px solid #374151;
+  margin-left: auto;
+  margin-bottom: 5px;
+}
+
+.signature-label {
+  font-style: italic;
+  color: #374151;
+}
+
+.date-issued {
+  margin-top: 20px;
+  text-align: center;
+  color: #6b7280;
+  font-size: 14px;
+}
+
+/* =====================
+   PRINT-ONLY ELEMENTS
+   ===================== */
+.print-only {
+  display: none;
+}
+
+.no-print {
+  display: block;
+}
+
+/* =====================
+   RESPONSIVE DESIGN
+   ===================== */
+@media (max-width: 1200px) {
+  .teacher-schedule-container {
+    padding: 16px;
+    max-width: 100%;
+  }
+
+  .teacher-schedule-table td {
+    min-width: 120px;
+  }
+}
+
+@media (max-width: 900px) {
+  .teacher-schedule-container {
+    padding: 12px;
+  }
+
+  .teacher-schedule-table th,
+  .teacher-schedule-table td {
+    font-size: 11px;
+    padding: 6px 4px;
+  }
+
+  .print-button {
+    font-size: 12px;
+    padding: 8px 16px;
+  }
+
+  .event-card {
+    font-size: 11px;
+    padding: 6px;
+  }
+}
+
+/* =====================
+   ENHANCED PRINT STYLES
+   ===================== */
+@media print {
+  /* Hide everything except schedule */
+  body * {
+    visibility: hidden;
+    margin: 0;
+    padding: 0;
+  }
+
+  .teacher-schedule-wrapper,
+  .teacher-schedule-wrapper * {
+    visibility: visible;
+  }
+
+  /* Show print-only elements */
+  .print-only {
+    display: block !important;
+  }
+
+  /* Hide screen-only elements */
+  .no-print {
+    display: none !important;
+  }
+
+  /* Set page to landscape */
+  @page {
+    size: landscape;
+    margin: 0.5cm;
+  }
+
+  /* Reset wrapper and container */
+  .teacher-schedule-wrapper {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 10px !important;
+  }
+
+  .teacher-schedule-container {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 10px !important;
+    box-shadow: none !important;
+    border: none !important;
+    background-color: white !important;
+    border-radius: 0 !important;
+  }
+
+  .table-wrapper {
+    overflow: visible !important;
+  }
+
+  /* Report header styling for print */
+  .report-header {
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #1f2937;
+  }
+  
+  .school-header h1 {
+    font-size: 20px;
+  }
+  
+  .school-header h2 {
+    font-size: 16px;
+  }
+
+  .teacher-info {
+    font-size: 12px;
+  }
+
+  /* Table adjustments for print */
+  .teacher-schedule-table {
+    width: 100% !important;
+    font-size: 9pt !important;
+    page-break-inside: auto;
+  }
+
+  .teacher-schedule-table thead {
+    display: table-header-group;
+  }
+
+  .teacher-schedule-table tr {
+    page-break-inside: avoid;
+    page-break-after: auto;
+  }
+
+  .teacher-schedule-table th {
+    font-size: 9pt !important;
+    padding: 6px 4px !important;
+    background-color: #1e40af !important;
+    color: white !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+    border: 1px solid #000 !important;
+  }
+
+  .teacher-schedule-table td {
+    padding: 4px !important;
+    font-size: 8pt !important;
+    border: 1px solid #666 !important;
+  }
+
+  /* Time cells */
+  .time-cell {
+    font-size: 8pt !important;
+    padding: 4px !important;
+    background-color: #f3f4f6 !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* Event cards for print */
+  .event-card {
+    font-size: 8pt !important;
+    padding: 4px !important;
+    min-height: 40px !important;
+    background-color: #dbeafe !important;
+    border: 1px solid #3b82f6 !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+    box-shadow: none !important;
+  }
+
+  .event-card.lab {
+    background-color: #fef3c7 !important;
+    border: 1px solid #f59e0b !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .subject-code {
+    font-size: 9pt !important;
+    margin-bottom: 2px !important;
+  }
+
+  .subject-name {
+    font-size: 8pt !important;
+    margin-bottom: 2px !important;
+  }
+
+  .time-range {
+    font-size: 7pt !important;
+    margin-bottom: 2px !important;
+    padding: 1px 4px !important;
+  }
+
+  .extra-info {
+    font-size: 7pt !important;
+  }
+
+  /* Title */
+  .schedule-title {
+    font-size: 16pt !important;
+    margin-bottom: 10px !important;
+  }
+
+  /* Report summary for print */
+  .report-summary {
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 2px solid #1f2937;
+  }
+  
+  .summary-grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  
+  .summary-item {
+    padding: 6px 8px;
+    font-size: 11px;
+  }
+
+  .signature-section {
+    margin-top: 30px;
+  }
+
+  .signature-line {
+    width: 180px;
+  }
+
+  .date-issued {
+    font-size: 12px;
+  }
+
+  /* Remove hover effects */
+  .event-card:hover {
+    transform: none !important;
+    box-shadow: none !important;
+  }
+
+  /* Ensure colors print correctly */
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+}
+
+/* =====================
+   NEW COMPACT CARD STYLES
+   ===================== */
+
+.subjects-header {
+  margin-bottom: 24px;
+}
+
+.subjects-title {
+  font-size: 1.875rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin: 0;
+  text-align: left;
+}
+
+.subject-card-new {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  background: white;
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e5e7eb;
+  transition: all 0.2s ease;
+  width: 100%;
+  max-width: 400px;
+}
+
+.subject-card-new:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+.subject-icon {
+  background: #6366f1;
+  color: white;
+  padding: 8px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.subject-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+}
+
+.subject-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #1f2937;
+  margin: 0;
+  line-height: 1.3;
+}
+
+.subject-code {
+  font-size: 12px;
+  color: #6b7280;
+  margin: 0;
+  font-weight: 500;
+}
+
+.course-info {
+  margin: 4px 0;
+}
+
+.course-badge {
+  background: #f3f4f6;
+  color: #374151;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  display: inline-block;
+}
+
+.room-info,
+.hours-info {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  color: #4b5563;
+}
+
+.room-icon,
+.hours-icon {
+  font-size: 12px;
+}
+
+.schedule-times {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+.time-badge {
+  background: #f9fafb;
+  color: #374151;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  border: 1px solid #e5e7eb;
+}
+
+/* Grid adjustment for new cards */
+.subjects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+  gap: 16px;
+  padding: 20px 0;
+}
+
+@media (max-width: 768px) {
+  .subjects-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .subject-card-new {
+    max-width: 100%;
+  }
+}

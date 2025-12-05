@@ -1,0 +1,242 @@
+.teacher-card {
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 12px;
+  background: white;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.teacher-card:hover {
+  border-color: #2196f3;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  transform: translateY(-1px);
+}
+
+.teacher-card.selected {
+  border-color: #2196f3;
+  background-color: #e3f2fd;
+  box-shadow: 0 4px 12px rgba(33, 150, 243, 0.2);
+}
+
+.teacher-card.unavailable {
+  background-color: #fafafa;
+  border-color: #ccc;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.teacher-card.unavailable:hover {
+  transform: none;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.teacher-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 12px;
+}
+
+.teacher-info {
+  flex: 1;
+}
+
+.teacher-name {
+  margin: 0 0 4px 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+}
+
+.employment-type {
+  font-size: 12px;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-weight: 500;
+}
+
+.employment-type.full-time {
+  background-color: #e8f5e8;
+  color: #2e7d32;
+}
+
+.employment-type.part-time {
+  background-color: #fff3e0;
+  color: #f57c00;
+}
+
+.availability-status {
+  font-size: 11px;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.availability-status.available {
+  background-color: #e8f5e8;
+  color: #2e7d32;
+}
+
+.availability-status.near-limit {
+  background-color: #fff8e1;
+  color: #f57c00;
+}
+
+.availability-status.at-limit {
+  background-color: #ffebee;
+  color: #c62828;
+}
+
+.availability-status.overloaded {
+  background-color: #fff3e0;
+  color: #ef6c00;
+}
+
+.availability-status.conflicted {
+  background-color: #ffebee;
+  color: #c62828;
+}
+
+.workload-section {
+  margin-bottom: 12px;
+}
+
+.workload-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.workload-text {
+  font-size: 13px;
+  color: #666;
+  font-weight: 500;
+}
+
+.workload-bar-container {
+  width: 100%;
+  height: 6px;
+  background-color: #f0f0f0;
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.workload-bar {
+  height: 100%;
+  border-radius: 3px;
+  transition: all 0.3s ease;
+  min-width: 2px;
+}
+
+.current-subjects {
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid #f0f0f0;
+}
+
+.subjects-label {
+  font-size: 11px;
+  color: #888;
+  margin-bottom: 4px;
+  font-weight: 500;
+}
+
+.subjects-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.subject-tag {
+  font-size: 10px;
+  padding: 2px 6px;
+  background-color: #f5f5f5;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  color: #666;
+  font-weight: 500;
+}
+
+.subject-tag.more {
+  background-color: #e3f2fd;
+  color: #1976d2;
+  border-color: #bbdefb;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .teacher-card {
+    padding: 12px;
+  }
+  
+  .teacher-card-header {
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .availability-status {
+    align-self: flex-start;
+  }
+}
+
+/* Grid layout for teacher selection */
+.teacher-selection-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 12px;
+  max-height: 400px;
+  overflow-y: auto;
+  padding: 8px;
+}
+
+.teacher-selection-grid .teacher-card {
+  margin-bottom: 0;
+}
+
+/* Search and filter section */
+.teacher-selection-header {
+  margin-bottom: 16px;
+  padding: 12px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+}
+
+.teacher-search {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 14px;
+  margin-bottom: 8px;
+}
+
+.teacher-filters {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.filter-button {
+  padding: 4px 12px;
+  border: 1px solid #ddd;
+  background: white;
+  border-radius: 16px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.filter-button.active {
+  background-color: #2196f3;
+  color: white;
+  border-color: #2196f3;
+}
+
+.filter-button:hover {
+  border-color: #2196f3;
+}

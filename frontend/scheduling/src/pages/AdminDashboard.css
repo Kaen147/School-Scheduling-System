@@ -1,0 +1,252 @@
+/* AdminDashboard.css - Professional Clean Design */
+
+.admin-dashboard {
+  width: 100%;
+  background-color: #f8fafc;
+}
+
+.admin-main-content {
+  width: 100%;
+  min-height: 100vh;
+  background-color: #f8fafc;
+  padding: 2rem 2.5rem;
+}
+
+.admin-main {
+  overflow-y: auto;
+}
+
+.main-content {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0;
+}
+
+/* Welcome Section */
+.welcome-text {
+  color: #0f172a;
+  font-size: 1.875rem;
+  font-weight: 700;
+  margin-bottom: 2rem;
+  letter-spacing: -0.025em;
+}
+
+/* Stats Section */
+.stats-section {
+  margin-bottom: 2.5rem;
+}
+
+/* Grid Layouts */
+.action-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.action-cards-grid.two-columns {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.action-cards-grid.stats-row {
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+}
+
+/* Card Design - Clean and Professional */
+.action-card {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 1.75rem;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  transition: all 0.2s ease;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 200px; /* Fixed height for consistent alignment */
+}
+
+.action-card:hover {
+  border-color: #cbd5e1;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transform: translateY(-2px);
+}
+
+.action-card h3 {
+  color: #1e293b;
+  margin-bottom: 0.5rem;
+  font-size: 1.125rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  flex-shrink: 0; /* Prevent title from shrinking */
+}
+
+.action-card p {
+  color: #64748b;
+  margin-bottom: 1.5rem;
+  line-height: 1.6;
+  font-size: 0.9375rem;
+  flex-grow: 1; /* Allow description to grow and fill space */
+}
+
+/* Ensure button stays at bottom */
+.action-card .action-btn {
+  margin-top: auto; /* Push button to bottom */
+}
+
+/* Stats Cards */
+.action-card.stats-card {
+  text-align: left;
+  border-left: 3px solid #ffffff;
+  background: #ffffff;
+  min-height: 160px; /* Smaller height for stats cards */
+  display: flex;
+  flex-direction: column;
+}
+
+.action-card.stats-card h3 {
+  font-size: 0.875rem;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+  flex-shrink: 0;
+}
+
+.stat-number {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0.75rem 0 1.25rem 0;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+}
+
+/* Ensure stats button stays at bottom */
+.action-card.stats-card .action-btn {
+  margin-top: auto;
+}
+
+/* Button Design - Modern and Clean */
+.action-btn {
+  width: 100%;
+  padding: 0.75rem 1.25rem;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.875rem;
+  letter-spacing: 0.01em;
+}
+
+.action-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.action-btn:active {
+  transform: translateY(0);
+}
+
+.action-btn.primary {
+  background-color: #3b82f6;
+  color: white;
+}
+
+.action-btn.primary:hover {
+  background-color: #2563eb;
+}
+
+.action-btn.secondary {
+  background-color: #f1f5f9;
+  color: #475569;
+  border: 1px solid #e2e8f0;
+}
+
+.action-btn.secondary:hover {
+  background-color: #e2e8f0;
+  border-color: #cbd5e1;
+}
+
+/* Loading State */
+.loading-text {
+  text-align: center;
+  color: #64748b;
+  font-size: 1.125rem;
+  margin-top: 3rem;
+  padding: 3rem;
+  font-weight: 500;
+}
+
+/* Responsive Design */
+@media (max-width: 1600px) {
+  .action-cards-grid {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.25rem;
+  }
+}
+
+@media (max-width: 1200px) {
+  .action-cards-grid.two-columns {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .action-cards-grid.stats-row {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .admin-main-content {
+    padding: 1.5rem;
+  }
+
+  .welcome-text {
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .action-cards-grid,
+  .action-cards-grid.two-columns,
+  .action-cards-grid.stats-row {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .action-card {
+    padding: 1.5rem;
+  }
+
+  .stat-number {
+    font-size: 2.25rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .admin-main-content {
+    padding: 1rem;
+  }
+
+  .welcome-text {
+    font-size: 1.25rem;
+  }
+
+  .action-card {
+    padding: 1.25rem;
+  }
+
+  .stat-number {
+    font-size: 2rem;
+  }
+
+  .action-btn {
+    font-size: 0.8125rem;
+    padding: 0.675rem 1rem;
+  }
+}
