@@ -182,6 +182,7 @@ router.post("/", async (req, res) => {
       courseAbbreviation,
       yearLevel,
       semester,
+      academicYear,
       events,
     } = req.body;
 
@@ -193,11 +194,12 @@ router.post("/", async (req, res) => {
       !courseAbbreviation ||
       !yearLevel ||
       !semester ||
+      !academicYear ||
       !events
     ) {
       return res.status(400).json({
         message:
-          "Missing required fields: name, courseId, courseName, courseAbbreviation, yearLevel, semester, events",
+          "Missing required fields: name, courseId, courseName, courseAbbreviation, yearLevel, semester, academicYear, events",
       });
     }
 
@@ -285,7 +287,7 @@ router.post("/", async (req, res) => {
     const existingConflicts = checkConflictsWithExisting(
       events,
       allSchedules,
-      { courseId, yearLevel, semester } // Pass current schedule context
+      { courseId, yearLevel, semester, academicYear } // Pass current schedule context
     );
     if (existingConflicts.length > 0) {
       return res.status(400).json({
@@ -309,6 +311,7 @@ router.post("/", async (req, res) => {
       courseAbbreviation,
       yearLevel,
       semester,
+      academicYear,
       events,
     });
 
@@ -370,6 +373,7 @@ router.put("/:id", async (req, res) => {
       courseAbbreviation,
       yearLevel,
       semester,
+      academicYear,
       events,
     } = req.body;
 
@@ -447,7 +451,8 @@ router.put("/:id", async (req, res) => {
         { 
           courseId: courseId || schedule.courseId, 
           yearLevel: yearLevel || schedule.yearLevel,
-          semester: semester || schedule.semester 
+          semester: semester || schedule.semester,
+          academicYear: academicYear || schedule.academicYear
         }
       );
       if (existingConflicts.length > 0) {
@@ -475,6 +480,7 @@ router.put("/:id", async (req, res) => {
       schedule.courseAbbreviation = courseAbbreviation;
     if (yearLevel !== undefined) schedule.yearLevel = yearLevel;
     if (semester !== undefined) schedule.semester = semester;
+    if (academicYear !== undefined) schedule.academicYear = academicYear;
     if (events !== undefined) schedule.events = events;
 
     const updatedSchedule = await schedule.save();
@@ -597,11 +603,12 @@ function checkConflictsWithExisting(newEvents, existingSchedules, currentSchedul
         const hasTimeOverlap = newStart < existingEnd && existingStart < newEnd;
         if (!hasTimeOverlap) continue;
 
-        // 1. STUDENT CONFLICT: Same course/year/semester can't attend two classes at once
+        // 1. STUDENT CONFLICT: Same course/year/semester/academic year can't attend two classes at once
         const sameStudents = 
           existingSchedule.courseId?.toString() === currentScheduleContext.courseId?.toString() &&
           existingSchedule.yearLevel === currentScheduleContext.yearLevel &&
-          existingSchedule.semester === currentScheduleContext.semester;
+          existingSchedule.semester === currentScheduleContext.semester &&
+          existingSchedule.academicYear === currentScheduleContext.academicYear;
 
         if (sameStudents) {
           conflicts.push({
@@ -613,13 +620,14 @@ function checkConflictsWithExisting(newEvents, existingSchedules, currentSchedul
           });
         }
 
-        // 2. TEACHER CONFLICT: Same teacher can't teach two classes at once
+        // 2. TEACHER CONFLICT: Same teacher can't teach two classes at once (in same academic year)
         const existingTeacherId = existingEvent.assignedTeacher?.teacherId?.toString() || 
                                    existingEvent.assignedTeacher?.teacherId?._id?.toString();
         const newTeacherId = newEvent.assignedTeacher?.teacherId?.toString() || 
                             newEvent.assignedTeacher?.teacherId?._id?.toString();
 
-        if (existingTeacherId && newTeacherId && existingTeacherId === newTeacherId) {
+        if (existingTeacherId && newTeacherId && existingTeacherId === newTeacherId && 
+            existingSchedule.academicYear === currentScheduleContext.academicYear) {
           conflicts.push({
             type: 'TEACHER',
             existingSchedule: existingSchedule.name,
@@ -630,11 +638,12 @@ function checkConflictsWithExisting(newEvents, existingSchedules, currentSchedul
           });
         }
 
-        // 3. ROOM CONFLICT: Same room can't host two classes at once
+        // 3. ROOM CONFLICT: Same room can't host two classes at once (in same academic year)
         const existingRoom = existingEvent.room?.trim();
         const newRoom = newEvent.room?.trim();
 
-        if (existingRoom && newRoom && existingRoom.toLowerCase() === newRoom.toLowerCase()) {
+        if (existingRoom && newRoom && existingRoom.toLowerCase() === newRoom.toLowerCase() &&
+            existingSchedule.academicYear === currentScheduleContext.academicYear) {
           conflicts.push({
             type: 'ROOM',
             existingSchedule: existingSchedule.name,
