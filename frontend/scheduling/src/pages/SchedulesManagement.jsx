@@ -44,7 +44,7 @@ function SchedulesManagement() {
   const fetchSchedules = async () => {
     try {
       setLoading(true);
-      const res = await axios.get("https://school-scheduling-system-production.up.railway.app/api/schedules");
+      const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/schedules`);
       setSchedules(res.data);
       setError(null);
     } catch (err) {
@@ -57,7 +57,7 @@ function SchedulesManagement() {
 
   const fetchCourses = async () => {
     try {
-      const res = await axios.get("https://school-scheduling-system-production.up.railway.app/api/courses");
+      const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/courses`);
       setCourses(res.data);
     } catch (err) {
       console.error("Error fetching courses:", err);

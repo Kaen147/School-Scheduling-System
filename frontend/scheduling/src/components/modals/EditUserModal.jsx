@@ -80,7 +80,7 @@ function EditUserModal({ show, onClose, onSuccess, user }) {
       console.log("Updating user with data:", updateData);
       console.log("Selected user ID:", user._id);
 
-      const res = await fetch(`https://school-scheduling-system-production.up.railway.app/api/users/${user._id}`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/users/${user._id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(updateData),

@@ -28,18 +28,18 @@ function AdminDashboard() {
   const fetchDashboardData = async () => {
     try {
       const teachersRes = await fetch(
-        "https://school-scheduling-system-production.up.railway.app/api/users/teachers"
+        `${import.meta.env.VITE_API_URL}/api/users/teachers`
       );
       const teachersData = await teachersRes.json();
       setTeachers(teachersData);
 
       // Student listing removed (student functionality disabled)
 
-      const coursesRes = await axios.get("https://school-scheduling-system-production.up.railway.app/api/courses");
+      const coursesRes = await axios.get(`${import.meta.env.VITE_API_URL}/api/courses`);
       setCourses(coursesRes.data);
 
       const schedulesRes = await axios.get(
-        "https://school-scheduling-system-production.up.railway.app/api/schedules"
+        `${import.meta.env.VITE_API_URL}/api/schedules`
       );
       setSchedules(schedulesRes.data);
     } catch (err) {

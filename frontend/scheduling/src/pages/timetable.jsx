@@ -32,19 +32,19 @@ const WeeklyTimetable = (props) => {
   // ADDED: Missing fetchData function
   const fetchData = async (info, excludeScheduleId = null) => {
     try {
-      const courseRes = await axios.get("https://school-scheduling-system-production.up.railway.app/api/courses");
+      const courseRes = await axios.get(`${import.meta.env.VITE_API_URL}/api/courses`);
       setCourses(courseRes.data);
 
       // Fetch offerings for this specific schedule context (course, year, semester, academicYear)
       if (info?.courseId && info?.yearLevel && info?.semester && info?.academicYear) {
         const offeringsRes = await axios.get(
-          `https://school-scheduling-system-production.up.railway.app/api/offerings?courseId=${info.courseId}&yearLevel=${info.yearLevel}&semester=${info.semester}&academicYear=${info.academicYear}`
+          `${import.meta.env.VITE_API_URL}/api/offerings?courseId=${info.courseId}&yearLevel=${info.yearLevel}&semester=${info.semester}&academicYear=${info.academicYear}`
         );
         
         // Set offerings as subjects so the modal can access assignedTeachers
         setSubjects(offeringsRes.data || []);
         
-        let url = `https://school-scheduling-system-production.up.railway.app/api/schedules/check-conflicts/${info.courseId}/${info.yearLevel}/${info.semester}`;
+        let url = `${import.meta.env.VITE_API_URL}/api/schedules/check-conflicts/${info.courseId}/${info.yearLevel}/${info.semester}`;
         
         // Add excludeScheduleId as query parameter if provided
         if (excludeScheduleId) {
@@ -55,7 +55,7 @@ const WeeklyTimetable = (props) => {
         setExistingSchedules(existingRes.data || []);
       } else {
         // Fallback: fetch all subjects if no schedule info
-        const subjectRes = await axios.get("https://school-scheduling-system-production.up.railway.app/api/subjects");
+        const subjectRes = await axios.get(`${import.meta.env.VITE_API_URL}/api/subjects`);
         setSubjects(subjectRes.data);
       }
     } catch (err) {
@@ -164,7 +164,7 @@ const WeeklyTimetable = (props) => {
 
     const fetchScheduleById = async (id) => {
       try {
-        const res = await axios.get(`https://school-scheduling-system-production.up.railway.app/api/schedules/${id}`);
+        const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/schedules/${id}`);
         const data = res.data;
         
         // Build schedule object for grid
@@ -644,9 +644,9 @@ const WeeklyTimetable = (props) => {
         // Create or update based on mode
         let response;
         if (mode === 'edit' && params.id) {
-          response = await axios.put(`https://school-scheduling-system-production.up.railway.app/api/schedules/${params.id}`, scheduleData);
+          response = await axios.put(`${import.meta.env.VITE_API_URL}/api/schedules/${params.id}`, scheduleData);
         } else {
-          response = await axios.post('https://school-scheduling-system-production.up.railway.app/api/schedules', scheduleData);
+          response = await axios.post(`${import.meta.env.VITE_API_URL}/api/schedules`, scheduleData);
         }
 
         if (response.status === 201 || response.status === 200) {

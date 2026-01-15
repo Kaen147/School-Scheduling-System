@@ -36,21 +36,21 @@ function SubjectManagement() {
       setLoading(true);
       // Fetch offerings, subjects, and courses in parallel
       const [offeringsRes, subjectsRes, coursesRes] = await Promise.all([
-        axios.get("https://school-scheduling-system-production.up.railway.app/api/offerings"),
-        axios.get("https://school-scheduling-system-production.up.railway.app/api/subjects"),
-        axios.get("https://school-scheduling-system-production.up.railway.app/api/courses"),
+        axios.get(`${import.meta.env.VITE_API_URL}/api/offerings`),
+        axios.get(`${import.meta.env.VITE_API_URL}/api/subjects`),
+        axios.get(`${import.meta.env.VITE_API_URL}/api/courses`),
       ]);
 
       // Fetch teachers and rooms separately and tolerate failure
       let teachersRes = { data: [] };
       let roomsRes = { data: [] };
       try {
-        teachersRes = await axios.get("https://school-scheduling-system-production.up.railway.app/api/users/teachers");
+        teachersRes = await axios.get(`${import.meta.env.VITE_API_URL}/api/users/teachers`);
       } catch (err) {
         console.error("Failed to fetch teachers (non-blocking):", err.message || err);
       }
       try {
-        roomsRes = await axios.get("https://school-scheduling-system-production.up.railway.app/api/rooms");
+        roomsRes = await axios.get(`${import.meta.env.VITE_API_URL}/api/rooms`);
       } catch (err) {
         console.error("Failed to fetch rooms (non-blocking):", err.message || err);
       }
@@ -160,7 +160,7 @@ function SubjectManagement() {
     if (!result.isConfirmed) return;
 
     try {
-      await axios.delete(`https://school-scheduling-system-production.up.railway.app/api/offerings/${offering._id}`);
+      await axios.delete(`${import.meta.env.VITE_API_URL}/api/offerings/${offering._id}`);
       Swal.fire({ icon: "success", title: "Offering Deleted", timer: 1200, showConfirmButton: false });
       fetchData();
     } catch (err) {

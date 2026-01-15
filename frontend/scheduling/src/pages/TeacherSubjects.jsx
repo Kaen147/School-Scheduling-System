@@ -50,8 +50,8 @@ function TeacherSubjects({ teacherId }) {
 
         // Fetch both offerings and schedule data
         const [offeringsRes, scheduleRes] = await Promise.all([
-          axios.get("https://school-scheduling-system-production.up.railway.app/api/offerings", { signal }),
-          fetch(`https://school-scheduling-system-production.up.railway.app/api/schedules/by-teacher/${teacherId}`)
+          axios.get(`${import.meta.env.VITE_API_URL}/api/offerings`, { signal }),
+          fetch(`${import.meta.env.VITE_API_URL}/api/schedules/by-teacher/${teacherId}`)
         ]);
 
         const allOfferings = Array.isArray(offeringsRes.data) ? offeringsRes.data : [];
