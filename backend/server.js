@@ -23,17 +23,33 @@ const MONGODBURL =
   "mongodb://localhost:27017/yourdb";
 
 // Configure CORS for production
+const allowedOrigins = [
+  'http://localhost:5173',      // Local development (Vite default port)
+  'http://localhost:3000',      // Alternative local port
+  process.env.FRONTEND_URL      // Production frontend from env variable
+].filter(Boolean);
+
 const corsOptions = {
-  origin: [
-    'http://localhost:5173',      // Local development (Vite default port)
-    'http://localhost:3000',      // Alternative local port
-    process.env.FRONTEND_URL || '*' // Production frontend from env variable
-  ],
+  origin: function (origin, callback) {
+    // Allow requests with no origin (mobile apps, curl, Postman)
+    if (!origin) return callback(null, true);
+    
+    // Allow all origins in development or if origin is in allowed list
+    if (allowedOrigins.length === 0 || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      // In production, allow any origin for now (you can restrict later)
+      callback(null, true);
+    }
+  },
   credentials: true,              // Allow cookies/auth headers
   optionsSuccessStatus: 200       // For legacy browsers
 };
 
 app.use(cors(corsOptions));
+
+// Handle preflight requests explicitly
+app.options('*', cors(corsOptions));
 app.use(express.json());
 
 // Mount routes
