@@ -152,6 +152,134 @@ router.get('/sync-events', async (req, res) => {
   }
 });
 
+// GET recyclable schedules (MUST be before /:id to avoid matching "recyclable" as an ID)
+router.get("/recyclable", async (req, res) => {
+  try {
+    const schedules = await Schedule.find({ isActive: true })
+      .populate("courseId", "name abbreviation code")
+      .select("name academicYear semester yearLevel courseId events")
+      .sort({ academicYear: -1, semester: -1 });
+
+    // Add subject count for each schedule
+    const schedulesWithCount = schedules.map(schedule => ({
+      ...schedule.toObject(),
+      subjectCount: schedule.events?.length || 0,
+      courseCode: schedule.courseId?.abbreviation || schedule.courseId?.code
+    }));
+
+    res.json(schedulesWithCount);
+  } catch (error) {
+    console.error("Error fetching recyclable schedules:", error);
+    res.status(500).json({ message: "Error fetching recyclable schedules" });
+  }
+});
+
+// POST recycle schedule (MUST be before /:id routes)
+router.post("/recycle", async (req, res) => {
+  try {
+    const { 
+      sourceScheduleId, 
+      targetAcademicYear, 
+      targetSemester, 
+      teacherMappings 
+    } = req.body;
+
+    // Get source schedule
+    const sourceSchedule = await Schedule.findById(sourceScheduleId)
+      .populate("courseId");
+
+    if (!sourceSchedule) {
+      return res.status(404).json({ message: "Source schedule not found" });
+    }
+
+    // Check if target schedule already exists
+    const existingSchedule = await Schedule.findOne({
+      courseId: sourceSchedule.courseId._id,
+      yearLevel: sourceSchedule.yearLevel,
+      academicYear: targetAcademicYear,
+      semester: targetSemester,
+      isActive: true
+    });
+
+    if (existingSchedule) {
+      return res.status(400).json({ 
+        message: "A schedule for this course, year level, and semester already exists" 
+      });
+    }
+
+    // Create new schedule
+    const newSchedule = new Schedule({
+      name: `${sourceSchedule.courseId.abbreviation} Year ${sourceSchedule.yearLevel} - ${targetAcademicYear} Semester ${targetSemester}`,
+      courseId: sourceSchedule.courseId._id,
+      yearLevel: sourceSchedule.yearLevel,
+      academicYear: targetAcademicYear,
+      semester: targetSemester,
+      events: sourceSchedule.events || [],
+      isActive: true
+    });
+
+    const savedSchedule = await newSchedule.save();
+
+    // Copy subject offerings with updated teacher mappings
+    const sourceOfferings = await SubjectOffering.find({
+      courseId: sourceSchedule.courseId._id,
+      yearLevel: sourceSchedule.yearLevel,
+      semester: sourceSchedule.semester,
+      academicYear: sourceSchedule.academicYear
+    });
+
+    let subjectsCopied = 0;
+    let teachersUpdated = 0;
+
+    for (const sourceOffering of sourceOfferings) {
+      // Create new offering for target academic year
+      const newOfferingData = {
+        subjectId: sourceOffering.subjectId,
+        courseId: sourceOffering.courseId,
+        yearLevel: sourceOffering.yearLevel,
+        semester: targetSemester,
+        academicYear: targetAcademicYear,
+        assignedTeachers: [...(sourceOffering.assignedTeachers || [])],
+        preferredRooms: sourceOffering.preferredRooms || []
+      };
+
+      // Update teacher assignments based on mappings
+      teacherMappings.forEach(mapping => {
+        if (mapping.subjectId === sourceOffering._id.toString()) {
+          const teacherIndex = mapping.assignmentIndex;
+          if (newOfferingData.assignedTeachers[teacherIndex]) {
+            newOfferingData.assignedTeachers[teacherIndex] = {
+              teacherId: mapping.newTeacherId,
+              teacherName: mapping.newTeacherName,
+              type: mapping.assignmentType
+            };
+            teachersUpdated++;
+          }
+        }
+      });
+
+      const newOffering = new SubjectOffering(newOfferingData);
+      await newOffering.save();
+      subjectsCopied++;
+    }
+
+    res.json({
+      success: true,
+      message: "Schedule recycled successfully",
+      newScheduleId: savedSchedule._id,
+      subjectsCopied,
+      teachersUpdated
+    });
+
+  } catch (error) {
+    console.error("Error recycling schedule:", error);
+    res.status(500).json({ 
+      message: "Error recycling schedule",
+      error: error.message 
+    });
+  }
+});
+
 // GET schedule by ID
 router.get("/:id", async (req, res) => {
   try {
@@ -725,28 +853,6 @@ async function validateSubjectHours(events) {
   };
 }
 
-// GET recyclable schedules
-router.get("/recyclable", async (req, res) => {
-  try {
-    const schedules = await Schedule.find({ isActive: true })
-      .populate("courseId", "name abbreviation code")
-      .select("name academicYear semester yearLevel courseId events")
-      .sort({ academicYear: -1, semester: -1 });
-
-    // Add subject count for each schedule
-    const schedulesWithCount = schedules.map(schedule => ({
-      ...schedule.toObject(),
-      subjectCount: schedule.events?.length || 0,
-      courseCode: schedule.courseId?.abbreviation || schedule.courseId?.code
-    }));
-
-    res.json(schedulesWithCount);
-  } catch (error) {
-    console.error("Error fetching recyclable schedules:", error);
-    res.status(500).json({ message: "Error fetching recyclable schedules" });
-  }
-});
-
 // GET detailed schedule for recycling
 router.get("/:id/detailed", async (req, res) => {
   try {
@@ -787,112 +893,6 @@ router.get("/:id/detailed", async (req, res) => {
   } catch (error) {
     console.error("Error fetching detailed schedule:", error);
     res.status(500).json({ message: "Error fetching schedule details" });
-  }
-});
-
-// POST recycle schedule
-router.post("/recycle", async (req, res) => {
-  try {
-    const { 
-      sourceScheduleId, 
-      targetAcademicYear, 
-      targetSemester, 
-      teacherMappings 
-    } = req.body;
-
-    // Get source schedule
-    const sourceSchedule = await Schedule.findById(sourceScheduleId)
-      .populate("courseId");
-
-    if (!sourceSchedule) {
-      return res.status(404).json({ message: "Source schedule not found" });
-    }
-
-    // Check if target schedule already exists
-    const existingSchedule = await Schedule.findOne({
-      courseId: sourceSchedule.courseId._id,
-      yearLevel: sourceSchedule.yearLevel,
-      academicYear: targetAcademicYear,
-      semester: targetSemester,
-      isActive: true
-    });
-
-    if (existingSchedule) {
-      return res.status(400).json({ 
-        message: "A schedule for this course, year level, and semester already exists" 
-      });
-    }
-
-    // Create new schedule
-    const newSchedule = new Schedule({
-      name: `${sourceSchedule.courseId.abbreviation} Year ${sourceSchedule.yearLevel} - ${targetAcademicYear} Semester ${targetSemester}`,
-      courseId: sourceSchedule.courseId._id,
-      yearLevel: sourceSchedule.yearLevel,
-      academicYear: targetAcademicYear,
-      semester: targetSemester,
-      events: sourceSchedule.events || [],
-      isActive: true
-    });
-
-    const savedSchedule = await newSchedule.save();
-
-    // Copy subject offerings with updated teacher mappings
-    const sourceOfferings = await SubjectOffering.find({
-      courseId: sourceSchedule.courseId._id,
-      yearLevel: sourceSchedule.yearLevel,
-      semester: sourceSchedule.semester,
-      academicYear: sourceSchedule.academicYear
-    });
-
-    let subjectsCopied = 0;
-    let teachersUpdated = 0;
-
-    for (const sourceOffering of sourceOfferings) {
-      // Create new offering for target academic year
-      const newOfferingData = {
-        subjectId: sourceOffering.subjectId,
-        courseId: sourceOffering.courseId,
-        yearLevel: sourceOffering.yearLevel,
-        semester: targetSemester,
-        academicYear: targetAcademicYear,
-        assignedTeachers: [...(sourceOffering.assignedTeachers || [])],
-        preferredRooms: sourceOffering.preferredRooms || []
-      };
-
-      // Update teacher assignments based on mappings
-      teacherMappings.forEach(mapping => {
-        if (mapping.subjectId === sourceOffering._id.toString()) {
-          const teacherIndex = mapping.assignmentIndex;
-          if (newOfferingData.assignedTeachers[teacherIndex]) {
-            newOfferingData.assignedTeachers[teacherIndex] = {
-              teacherId: mapping.newTeacherId,
-              teacherName: mapping.newTeacherName,
-              type: mapping.assignmentType
-            };
-            teachersUpdated++;
-          }
-        }
-      });
-
-      const newOffering = new SubjectOffering(newOfferingData);
-      await newOffering.save();
-      subjectsCopied++;
-    }
-
-    res.json({
-      success: true,
-      message: "Schedule recycled successfully",
-      newScheduleId: savedSchedule._id,
-      subjectsCopied,
-      teachersUpdated
-    });
-
-  } catch (error) {
-    console.error("Error recycling schedule:", error);
-    res.status(500).json({ 
-      message: "Error recycling schedule",
-      error: error.message 
-    });
   }
 });
 
