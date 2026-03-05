@@ -12,9 +12,9 @@ function UserManagement() {
   const [error, setError] = useState(null);
   const [teacherUnits, setTeacherUnits] = useState({});
 
-  // Filter states
+  // Filter states - default to showing teachers
   const [filters, setFilters] = useState({
-    role: "",
+    role: "teacher",
     status: "",
     searchTerm: "",
   });
@@ -202,10 +202,10 @@ function UserManagement() {
     return `${user.firstName} ${user.lastName}`;
   };
 
-  // Clear filters
+  // Clear filters - reset to default (teachers)
   const clearFilters = () => {
     setFilters({
-      role: "",
+      role: "teacher",
       status: "",
       searchTerm: "",
     });
@@ -238,10 +238,6 @@ function UserManagement() {
       </div>
     );
   }
-
-  const hasAnyFilter = Boolean(
-    filters.searchTerm?.trim() || filters.role || filters.status
-  );
 
   return (
     <div className="user-management-layout">
@@ -321,12 +317,7 @@ function UserManagement() {
         </div>
 
         {/* Users Table */}
-        {!hasAnyFilter ? (
-          <div className="empty-state">
-            <h3>Filter to view users</h3>
-            <p>Use the search and filters above to display matching users.</p>
-          </div>
-        ) : filteredUsers.length === 0 ? (
+        {filteredUsers.length === 0 ? (
           <div className="empty-state">
             <h3>No Users Found</h3>
             <p>No users match your current filters.</p>
