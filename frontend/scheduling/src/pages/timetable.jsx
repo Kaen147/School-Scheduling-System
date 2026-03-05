@@ -372,7 +372,7 @@ const WeeklyTimetable = (props) => {
         if (sessionType === 'lecture') {
           requiredHours = sessions.lecture.hours;
         } else if (sessionType === 'lab' && sessions.lab) {
-          requiredHours = sessions.lab.hours * sessions.lab.sessions;
+          requiredHours = sessions.lab.hours;
         }
         
         if (totalHours > requiredHours) {
@@ -879,7 +879,7 @@ const WeeklyTimetable = (props) => {
 
                 const sessions = getRequiredSessions(subjectRecord);
                 const requiredLecture = sessions.lecture.hours;
-                const requiredLab = sessions.lab ? sessions.lab.hours * sessions.lab.sessions : 0;
+                const requiredLab = sessions.lab ? sessions.lab.hours : 0; // Total lab hours (already includes all sessions)
                 const total = lecture + lab;
                 // Calculate requiredTotal from sessions: lecture hours + lab hours
                 const requiredTotal = requiredLecture + requiredLab;
