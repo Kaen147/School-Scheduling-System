@@ -184,6 +184,7 @@ const WeeklyTimetable = (props) => {
           courseId: data.courseId?._id || data.courseId,
           yearLevel: data.yearLevel,
           semester: data.semester,
+          academicYear: data.academicYear
         }, id); // Pass the current schedule ID here
       } catch (err) {
         console.error("Error fetching schedule by id:", err);
