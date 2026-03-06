@@ -7,6 +7,7 @@ import ScheduleEventModal from '../components/modals/timetable/ScheduleEventModa
 import SaveScheduleModal from '../components/modals/timetable/SaveScheduleModal';
 import DeleteEventModal from '../components/modals/timetable/DeleteEventModal';
 import ValidationModals from '../components/modals/timetable/ValidationModals';
+import { showTimetableInstructions } from '../components/modals/TimetableInstructionsModal';
 
 const WeeklyTimetable = (props) => {
   // Modal state for ScheduleEventModal
@@ -804,16 +805,23 @@ const WeeklyTimetable = (props) => {
 
   return (
     <div className="timetable-container">
+      {/* How to Use button - outside wrapper */}
+      <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '1rem' }}>
+        <button onClick={showTimetableInstructions} className="help-button">
+          ❓ How to Use
+        </button>
+      </div>
+
       <div className="timetable-wrapper">
         {modalOpen && (
           <ScheduleEventModal
             {...modalProps}
           />
         )}
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
-          <button onClick={goBack} className="action-btn secondary">Go Back</button>
+        <div style={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center', marginBottom: '1rem', gap: '0.5rem' }}>
+          <button onClick={goBack} className="back-button">← Go Back</button>
           {mode === 'view' ? (
-            <div style={{ display: 'flex', gap: '0.5rem' }}>
+            <div style={{ display: 'flex', gap: '0.5rem', marginLeft: 'auto' }}>
               <button
                 className="action-btn primary"
                 onClick={() => navigate(`/timetable/edit/${params.id}`)}
@@ -961,16 +969,14 @@ const WeeklyTimetable = (props) => {
               </thead>
               <tbody>
                 {timeSlots.map((timeSlot, timeIndex) => (
-                  <tr key={timeSlot.timeKey} className="body-row">
+                  <tr key={timeSlot.timeKey} className="body-row" style={{ height: '36px' }}>
                     <td className="time-slot-cell">{timeSlot.time12}</td>
                     {days.map(day => {
                       const cellKey = `${day}-${timeSlot.timeKey}`;
                       const event = schedule[cellKey];
-                      const occupiedBy = isSlotOccupied(day, timeIndex);
 
-                      if (occupiedBy && occupiedBy !== cellKey) return null;
-
-                      const rowSpan = event?.slotsOccupied || 1;
+                      // Calculate height in pixels for absolute positioning
+                      const heightInPixels = event ? event.slotsOccupied * 36 : 0;
                       const courseName = scheduleInfo?.courseAbbreviation;
                       
                       // Use preserved subject info first, then fall back to lookup
@@ -978,7 +984,7 @@ const WeeklyTimetable = (props) => {
                       let subjectCode = event?.subjectCode;
                       
                       // If not preserved, try to look them up
-                      if (!subjectName || !subjectCode) {
+                      if (event && (!subjectName || !subjectCode)) {
                         let subjectData = undefined;
                         if (event?.subjectId) {
                           // event.subjectId may be an object (populated) or string (id)
@@ -1002,22 +1008,41 @@ const WeeklyTimetable = (props) => {
                       return (
                         <td
                           key={cellKey}
-                          rowSpan={rowSpan}
                           className="schedule-cell"
                           onClick={mode === 'view' ? undefined : () => handleCellClick(day, timeSlot)}
                           onContextMenu={mode === 'view' ? undefined : (e) => {
                             e.preventDefault();
                             if (event) handleDeleteEvent(day, timeSlot);
                           }}
-                          style={{ height: `${24 * rowSpan}px`, cursor: mode === 'view' ? 'default' : 'pointer' }}
+                          style={{ 
+                            position: 'relative',
+                            height: '36px',
+                            padding: 0,
+                            cursor: mode === 'view' ? 'default' : 'pointer'
+                          }}
                         >
                           {event ? (
                             <div
-                              className="event-box"
+                              className="event-card"
                               style={{
-                                backgroundColor: (event.color?.bg) || (event.sessionType === 'lab' ? '#FEF3C7' : '#DBEAFE'),
-                                borderColor: (event.color?.border) || (event.sessionType === 'lab' ? '#F59E0B' : '#2563EB'),
-                                position: 'relative'
+                                position: 'absolute',
+                                top: '-18px',
+                                left: '4px',
+                                right: '4px',
+                                height: `${heightInPixels}px`,
+                                backgroundColor: (event.color?.bg) || (sessionType === 'lab' ? '#FEF3C7' : '#DBEAFE'),
+                                border: `2px solid ${(event.color?.border) || (sessionType === 'lab' ? '#F59E0B' : '#2563EB')}`,
+                                borderRadius: '6px',
+                                padding: '8px 6px',
+                                marginTop: '33px',
+                                display: 'flex',
+                                flexDirection: 'column',
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                zIndex: 10,
+                                boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+                                textAlign: 'center',
+                                overflow: 'hidden'
                               }}
                             >
                               <div style={{ fontWeight: 'bold', fontSize: '12px' }}>
@@ -1046,7 +1071,7 @@ const WeeklyTimetable = (props) => {
                               </div>
                             </div>
                           ) : (
-                            <div className="empty-cell">{mode === 'view' ? '' : 'Click to add'}</div>
+                            mode !== 'view' && <div className="empty-cell">Click to add</div>
                           )}
                         </td>
                       );
@@ -1058,23 +1083,6 @@ const WeeklyTimetable = (props) => {
           </div>
         </div>
 
-        <div className="instructions">
-          <h3 className="instructions-title">How to use:</h3>
-          <ul className="instructions-list">
-            <li>Click on any time slot to add/edit an event</li>
-            <li>Right-click on an event to delete it</li>
-            <li><strong>📚 Lecture (Blue)</strong>: Regular lecture sessions</li>
-            <li><strong>🧪 Lab (Yellow)</strong>: Laboratory sessions</li>
-            <li>Subjects are filtered based on selected course, year, and semester</li>
-            <li>Hours are tracked separately for lecture and lab sessions</li>
-            <li>Lecture-only subjects: 3 hours/week total</li>
-            <li>Subjects with lab: 2 hours lecture + 3 hours lab</li>
-            <li>Conflicts with existing schedules are detected and prevented</li>
-            <li>Select the end time - duration will be calculated automatically</li>
-            <li>Optionally add a room/location for the event</li>
-            <li>Click "Save Schedule" when finished to save your timetable</li>
-          </ul>
-        </div>
       </div>
     </div>
   );
