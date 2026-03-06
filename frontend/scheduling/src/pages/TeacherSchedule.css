@@ -71,28 +71,29 @@
   background-color: #1e40af;
   color: white;
   font-weight: 600;
-  padding: 12px 8px;
+  padding: 14px 10px;
   border: 1px solid #1e3a8a;
   position: sticky;
   top: 0;
   z-index: 10;
+  font-size: 14px;
 }
 
 .teacher-schedule-table td {
   border: 1px solid #e5e7eb;
   vertical-align: middle;
-  min-width: 140px;
+  min-width: 180px;
   padding: 0;
   background-color: #ffffff;
   position: relative;
   overflow: visible; /* Allow events to extend beyond cell boundaries */
-  height: 24px;
+  height: 36px;
 }
 
 .schedule-cell {
   position: relative;
   overflow: visible; /* Allow events to extend beyond cell boundaries */
-  height: 24px;
+  height: 36px;
   padding: 0;
 }
 

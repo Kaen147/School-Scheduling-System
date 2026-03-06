@@ -1,6 +1,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { useAuth } from "../context/AuthContext";
+import { FaChartBar, FaClock, FaBook, FaFlask, FaPrint, FaUserTie } from "react-icons/fa";
 import "./TeacherSchedule.css";
 
 function TeacherSchedule({ teacherId: propTeacherId, hideControls = false }) {
@@ -238,8 +239,8 @@ function TeacherSchedule({ teacherId: propTeacherId, hideControls = false }) {
             borderRadius: '6px',
             borderLeft: '4px solid #3B82F6'
           }}>
-            <div style={{ fontWeight: 'bold', fontSize: '14px', color: '#1F2937', marginBottom: '4px' }}>
-              📊 Total Units: {totalUnits}
+            <div style={{ fontWeight: 'bold', fontSize: '14px', color: '#1F2937', marginBottom: '4px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <FaChartBar /> Total Units: {totalUnits}
             </div>
           </div>
           <div style={{
@@ -248,8 +249,8 @@ function TeacherSchedule({ teacherId: propTeacherId, hideControls = false }) {
             borderRadius: '6px',
             borderLeft: '4px solid #10B981'
           }}>
-            <div style={{ fontWeight: 'bold', fontSize: '14px', color: '#1F2937', marginBottom: '4px' }}>
-              ⏱️ Total Hours/Week: {totalHours}h
+            <div style={{ fontWeight: 'bold', fontSize: '14px', color: '#1F2937', marginBottom: '4px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <FaClock /> Total Hours/Week: {totalHours}h
             </div>
           </div>
           <div style={{
@@ -258,8 +259,8 @@ function TeacherSchedule({ teacherId: propTeacherId, hideControls = false }) {
             borderRadius: '6px',
             borderLeft: '4px solid #F59E0B'
           }}>
-            <div style={{ fontWeight: 'bold', fontSize: '14px', color: '#1F2937', marginBottom: '4px' }}>
-              📚 Total Subjects: {new Set(allEvents.map(e => e.subjectCode)).size}
+            <div style={{ fontWeight: 'bold', fontSize: '14px', color: '#1F2937', marginBottom: '4px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <FaBook /> Total Subjects: {new Set(allEvents.map(e => e.subjectCode)).size}
             </div>
           </div>
         </div>
@@ -267,7 +268,7 @@ function TeacherSchedule({ teacherId: propTeacherId, hideControls = false }) {
         {/* Subject Breakdown */}
         <div style={{ marginTop: '1rem', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '0.75rem' }}>
           {subjectSummary.map((subject, index) => {
-            const sessionIcon = subject.sessionType === 'lab' ? '🧪' : '📚';
+            const SessionIcon = subject.sessionType === 'lab' ? FaFlask : FaBook;
             const color = subject.sessionType === 'lab' ? '#F59E0B' : '#2563EB';
             
             return (
@@ -277,8 +278,8 @@ function TeacherSchedule({ teacherId: propTeacherId, hideControls = false }) {
                 borderRadius: '6px',
                 borderLeft: `4px solid ${color}`
               }}>
-                <div style={{ fontWeight: 'bold', fontSize: '14px', color: '#1F2937', marginBottom: '8px' }}>
-                  {sessionIcon} {subject.subjectCode} - {subject.subjectName}
+                <div style={{ fontWeight: 'bold', fontSize: '14px', color: '#1F2937', marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                  <SessionIcon /> {subject.subjectCode} - {subject.subjectName}
                 </div>
                 <div style={{ fontSize: '12px', color: '#6B7280', marginBottom: '4px' }}>
                   <span style={{ color: color, fontWeight: '500' }}>
@@ -292,8 +293,8 @@ function TeacherSchedule({ teacherId: propTeacherId, hideControls = false }) {
       </div>
 
       {!hideControls && (
-        <button onClick={printButton} className="print-button no-print">
-          🖨️ Print Schedule
+        <button onClick={printButton} className="print-button no-print" style={{ display: 'flex', alignItems: 'center', gap: '8px', justifyContent: 'center' }}>
+          <FaPrint /> Print Schedule
         </button>
       )}
 
@@ -311,15 +312,10 @@ function TeacherSchedule({ teacherId: propTeacherId, hideControls = false }) {
             </thead>
             <tbody>
               {timeSlots.map((slot, timeIndex) => (
-                <tr key={slot.timeKey} style={{ height: '24px' }}>
+                <tr key={slot.timeKey} style={{ height: '36px' }}>
                   <td className="time-cell">{slot.time12}</td>
                   {days.map((day) => {
                     const eventData = eventGrid[day][timeIndex];
-                    
-                    // Skip if this slot is occupied by an event that started earlier
-                    if (eventData === 'occupied') {
-                      return null;
-                    }
                     
                     return (
                       <td 
@@ -327,7 +323,7 @@ function TeacherSchedule({ teacherId: propTeacherId, hideControls = false }) {
                         className="schedule-cell"
                         style={{ 
                           position: 'relative',
-                          height: '24px',
+                          height: '36px',
                           padding: 0,
                           border: '1px solid #e5e7eb'
                         }}
@@ -337,15 +333,15 @@ function TeacherSchedule({ teacherId: propTeacherId, hideControls = false }) {
                             className={`event-card ${eventData.sessionType === 'lab' ? 'lab' : ''}`}
                             style={{
                               position: 'absolute',
-                              top: `${-12}px`, // Center on the time line
+                              top: `${-18}px`, // Center on the time line (adjusted for 36px rows)
                               left: '4px',
                               right: '4px',
                               height: `${eventData.heightInPixels}px`,
                               backgroundColor: eventData.sessionType === 'lab' ? '#FEF3C7' : '#DBEAFE',
                               border: `2px solid ${eventData.sessionType === 'lab' ? '#F59E0B' : '#2563EB'}`,
                               borderRadius: '6px',
-                              padding: '6px 4px',
-                              marginTop: '22px', // Add margin to properly center on time lines
+                              padding: '8px 6px',
+                              marginTop: '33px', // Add margin to properly center on time lines (adjusted for 36px rows)
                               display: 'flex',
                               flexDirection: 'column',
                               justifyContent: 'center',
@@ -356,31 +352,88 @@ function TeacherSchedule({ teacherId: propTeacherId, hideControls = false }) {
                               textAlign: 'center',
                               overflow: 'hidden'
                             }}
+                            title={`${eventData.subjectCode} - ${eventData.subjectName}\n${formatTime(eventData.startTime)} - ${formatTime(eventData.endTime)}\n${eventData.assignedTeacher?.teacherName || 'No teacher'}\n${eventData.room || 'No room'}`}
                           >
-                            <div style={{ fontWeight: 'bold', fontSize: '12px' }}>
-                              {eventData.sessionType === 'lab' ? '🧪' : '📚'} {eventData.courseAbbreviation} - {eventData.subjectCode}
-                            </div>
-                            <div style={{ fontSize: '11px', marginTop: '2px' }}>
-                              {eventData.subjectName}
-                            </div>
-                            <div style={{ fontSize: '10px', color: '#059669', marginTop: '2px', fontWeight: '600' }}>
-                              👨‍🏫 {eventData.assignedTeacher?.teacherName || 'No teacher assigned'}
-                            </div>
-                            <div style={{ 
-                              fontSize: '10px', 
-                              color: eventData.sessionType === 'lab' ? '#92400E' : '#1E40AF',
-                              fontWeight: '600',
-                              marginTop: '2px',
-                              textTransform: 'uppercase'
-                            }}>
-                              {eventData.sessionType || 'lecture'}
-                            </div>
-                            <div style={{ fontSize: '10px', color: '#6B7280', marginTop: '2px' }}>
-                              {formatTime(eventData.startTime)} - {formatTime(eventData.endTime)}
-                            </div>
-                            <div style={{ fontSize: '9px', color: '#6B7280' }}>
-                              {calculateDuration(eventData.startTime, eventData.endTime)} {eventData.room && `• ${eventData.room}`}
-                            </div>
+                            {/* Very short cards (< 72px): Icon + Code + Subject Name + Room */}
+                            {eventData.heightInPixels < 72 ? (
+                              <>
+                                <div style={{ fontWeight: 'bold', fontSize: '12px', display: 'flex', alignItems: 'center', gap: '4px', justifyContent: 'center' }}>
+                                  {eventData.sessionType === 'lab' ? <FaFlask size={11} /> : <FaBook size={11} />}
+                                  {eventData.subjectCode}
+                                </div>
+                                <div style={{ fontSize: '10px', marginTop: '2px' }}>
+                                  {eventData.subjectName}
+                                </div>
+                                {eventData.room && (
+                                  <div style={{ fontSize: '9px', color: '#6B7280', marginTop: '2px' }}>
+                                    {eventData.room}
+                                  </div>
+                                )}
+                              </>
+                            ) : eventData.heightInPixels < 108 ? (
+                              /* Short cards (72-108px): Code + Subject Name + Time + Room */
+                              <>
+                                <div style={{ fontWeight: 'bold', fontSize: '12px', display: 'flex', alignItems: 'center', gap: '4px', justifyContent: 'center' }}>
+                                  {eventData.sessionType === 'lab' ? <FaFlask size={12} /> : <FaBook size={12} />}
+                                  {eventData.subjectCode}
+                                </div>
+                                <div style={{ fontSize: '11px', marginTop: '2px' }}>
+                                  {eventData.subjectName}
+                                </div>
+                                <div style={{ fontSize: '10px', color: '#6B7280', marginTop: '2px' }}>
+                                  {formatTime(eventData.startTime)} - {formatTime(eventData.endTime)}
+                                </div>
+                                {eventData.room && (
+                                  <div style={{ fontSize: '9px', color: '#6B7280' }}>
+                                    {eventData.room}
+                                  </div>
+                                )}
+                              </>
+                            ) : eventData.heightInPixels < 144 ? (
+                              /* Medium cards (108-144px): Code + Subject Name + Time + Room */
+                              <>
+                                <div style={{ fontWeight: 'bold', fontSize: '11px', display: 'flex', alignItems: 'center', gap: '4px', justifyContent: 'center' }}>
+                                  {eventData.sessionType === 'lab' ? <FaFlask size={11} /> : <FaBook size={11} />}
+                                  {eventData.courseAbbreviation} - {eventData.subjectCode}
+                                </div>
+                                <div style={{ fontSize: '10px', color: '#6B7280', marginTop: '2px' }}>
+                                  {formatTime(eventData.startTime)} - {formatTime(eventData.endTime)}
+                                </div>
+                                {eventData.room && (
+                                  <div style={{ fontSize: '9px', color: '#6B7280' }}>
+                                    {eventData.room}
+                                  </div>
+                                )}
+                              </>
+                            ) : (
+                              /* Tall cards (> 96px): Full details */
+                              <>
+                                <div style={{ fontWeight: 'bold', fontSize: '12px', display: 'flex', alignItems: 'center', gap: '4px', justifyContent: 'center' }}>
+                                  {eventData.sessionType === 'lab' ? <FaFlask /> : <FaBook />} {eventData.courseAbbreviation} - {eventData.subjectCode}
+                                </div>
+                                <div style={{ fontSize: '11px', marginTop: '2px' }}>
+                                  {eventData.subjectName}
+                                </div>
+                                <div style={{ fontSize: '10px', color: '#059669', marginTop: '2px', fontWeight: '600', display: 'flex', alignItems: 'center', gap: '4px', justifyContent: 'center' }}>
+                                  <FaUserTie /> {eventData.assignedTeacher?.teacherName || 'No teacher assigned'}
+                                </div>
+                                <div style={{ 
+                                  fontSize: '10px', 
+                                  color: eventData.sessionType === 'lab' ? '#92400E' : '#1E40AF',
+                                  fontWeight: '600',
+                                  marginTop: '2px',
+                                  textTransform: 'uppercase'
+                                }}>
+                                  {eventData.sessionType || 'lecture'}
+                                </div>
+                                <div style={{ fontSize: '10px', color: '#6B7280', marginTop: '2px' }}>
+                                  {formatTime(eventData.startTime)} - {formatTime(eventData.endTime)}
+                                </div>
+                                <div style={{ fontSize: '9px', color: '#6B7280' }}>
+                                  {calculateDuration(eventData.startTime, eventData.endTime)} {eventData.room && `• ${eventData.room}`}
+                                </div>
+                              </>
+                            )}
                           </div>
                         ) : null}
                       </td>
