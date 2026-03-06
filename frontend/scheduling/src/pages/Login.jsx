@@ -2,12 +2,14 @@ import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { useAuth } from "../context/AuthContext";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 import "./Login.css";
 import bcLogo from "../assets/BC Logo.png";
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const { login } = useAuth();
@@ -28,6 +30,8 @@ function Login() {
     employeeId: "",
   });
   const [passwordError, setPasswordError] = useState("");
+  const [showRegPassword, setShowRegPassword] = useState(false);
+  const [showRegConfirm, setShowRegConfirm] = useState(false);
 
   useEffect(() => {
     if (formData.confirm && formData.password !== formData.confirm) {
@@ -258,16 +262,40 @@ function Login() {
               />
             </div>
 
-            <div className="input-row">
+            <div className="input-row" style={{ position: 'relative' }}>
               <input
                 className="input-field with-left-icon"
-                type="password"
+                type={showPassword ? "text" : "password"}
                 placeholder="Password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 disabled={isLoading}
                 required
+                style={{ paddingRight: '40px' }}
               />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                style={{
+                  position: 'absolute',
+                  right: '10px',
+                  top: '50%',
+                  transform: 'translateY(-50%)',
+                  background: 'none',
+                  border: 'none',
+                  cursor: 'pointer',
+                  fontSize: '18px',
+                  color: '#94a3b8',
+                  padding: '5px',
+                  opacity: '0.6',
+                  transition: 'opacity 0.2s'
+                }}
+                onMouseEnter={(e) => e.currentTarget.style.opacity = '1'}
+                onMouseLeave={(e) => e.currentTarget.style.opacity = '0.6'}
+                aria-label={showPassword ? "Hide password" : "Show password"}
+              >
+                {showPassword ? <FaEyeSlash /> : <FaEye />}
+              </button>
             </div>
 
             <button
@@ -386,20 +414,72 @@ function Login() {
                 </>
               )}
 
-              <input
-                className="input-field"
-                type="password"
-                placeholder="Password *"
-                value={formData.password}
-                onChange={(e) => handleInputChange("password", e.target.value)}
-              />
-              <input
-                className="input-field"
-                type="password"
-                placeholder="Confirm Password *"
-                value={formData.confirm}
-                onChange={(e) => handleInputChange("confirm", e.target.value)}
-              />
+              <div style={{ position: 'relative' }}>
+                <input
+                  className="input-field"
+                  type={showRegPassword ? "text" : "password"}
+                  placeholder="Password *"
+                  value={formData.password}
+                  onChange={(e) => handleInputChange("password", e.target.value)}
+                  style={{ paddingRight: '40px' }}
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowRegPassword(!showRegPassword)}
+                  style={{
+                    position: 'absolute',
+                    right: '10px',
+                    top: '50%',
+                    transform: 'translateY(-50%)',
+                    background: 'none',
+                    border: 'none',
+                    cursor: 'pointer',
+                    fontSize: '18px',
+                    color: '#94a3b8',
+                    padding: '5px',
+                    opacity: '0.6',
+                    transition: 'opacity 0.2s'
+                  }}
+                  onMouseEnter={(e) => e.currentTarget.style.opacity = '1'}
+                  onMouseLeave={(e) => e.currentTarget.style.opacity = '0.6'}
+                  aria-label={showRegPassword ? "Hide password" : "Show password"}
+                >
+                  {showRegPassword ? <FaEyeSlash /> : <FaEye />}
+                </button>
+              </div>
+              <div style={{ position: 'relative' }}>
+                <input
+                  className="input-field"
+                  type={showRegConfirm ? "text" : "password"}
+                  placeholder="Confirm Password *"
+                  value={formData.confirm}
+                  onChange={(e) => handleInputChange("confirm", e.target.value)}
+                  style={{ paddingRight: '40px' }}
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowRegConfirm(!showRegConfirm)}
+                  style={{
+                    position: 'absolute',
+                    right: '10px',
+                    top: '50%',
+                    transform: 'translateY(-50%)',
+                    background: 'none',
+                    border: 'none',
+                    cursor: 'pointer',
+                    fontSize: '18px',
+                    color: '#94a3b8',
+                    padding: '5px',
+                    opacity: '0.6',
+                    transition: 'opacity 0.2s'
+                  }}
+                  onMouseEnter={(e) => e.currentTarget.style.opacity = '1'}
+                  onMouseLeave={(e) => e.currentTarget.style.opacity = '0.6'}
+                  aria-label={showRegConfirm ? "Hide password" : "Show password"}
+                >
+                  {showRegConfirm ? <FaEyeSlash /> : <FaEye />}
+                </button>
+              </div>
               {passwordError && <p className="error-text">{passwordError}</p>}
               <button className="submit-button" type="submit">
                 Register
