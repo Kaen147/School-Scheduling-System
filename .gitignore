@@ -6,8 +6,6 @@ dist/
 build/
 
 # Environment files
-.env
-.env.local
 
 # Logs
 npm-debug.log*
