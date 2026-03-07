@@ -35,7 +35,7 @@ router.get("/by-teacher/:teacherId", async (req, res) => {
 
     const schedules = await Schedule.find({ isActive: true })
       .populate("courseId", "name abbreviation")
-      .populate("events.subjectId", "name code requiredHours hasLab")
+      .populate("events.subjectId", "name code requiredHours hasLab lectureUnits labUnits")
       .populate("events.assignedTeacher.teacherId", "firstName lastName name")
       .sort({ createdAt: -1 });
 

@@ -164,12 +164,33 @@ function TeacherSchedule({ teacherId: propTeacherId, hideControls = false }) {
     let totalUnits = 0;
     let totalHours = 0;
     const subjectHours = {};
+    const subjectUnits = {}; // Track units per subject
+
+    console.log('TeacherSchedule: Calculating summary from', allEvents.length, 'events');
 
     allEvents.forEach(event => {
-      const duration = calculateDuration(event.startTime, event.endTime);
-      const hours = parseFloat(duration.replace(/[^\d.]/g, '')) || 0;
+      // Calculate duration in hours directly from time slots
+      const startIndex = timeSlots.findIndex(slot => slot.timeKey === event.startTime);
+      const endIndex = timeSlots.findIndex(slot => slot.timeKey === event.endTime);
+      const slots = endIndex - startIndex;
+      const durationHours = (slots * 30) / 60; // Convert 30-minute slots to hours
       
-      totalHours += hours;
+      totalHours += durationHours;
+      
+      // Calculate units from subject data
+      const lectureUnits = event.subjectId?.lectureUnits || 0;
+      const labUnits = event.subjectId?.labUnits || 0;
+      const eventUnits = lectureUnits + labUnits;
+      
+      console.log('Event:', event.subjectCode, 'duration:', durationHours, 'h, lectureUnits:', lectureUnits, 'labUnits:', labUnits, 'total:', eventUnits);
+      
+      // Track unique subjects to avoid double counting units
+      const subjectKey = event.subjectId?._id || event.subjectCode;
+      if (!subjectUnits[subjectKey]) {
+        subjectUnits[subjectKey] = eventUnits;
+        totalUnits += eventUnits;
+        console.log('Added units for', event.subjectCode, '- new total:', totalUnits);
+      }
       
       const sessionKey = `${event.subjectCode}-${event.sessionType || 'lecture'}`;
       if (!subjectHours[sessionKey]) {
@@ -182,15 +203,17 @@ function TeacherSchedule({ teacherId: propTeacherId, hideControls = false }) {
           hasLab: event.hasLab
         };
       }
-      subjectHours[sessionKey].hours += hours;
+      subjectHours[sessionKey].hours += durationHours;
     });
+
+    console.log('TeacherSchedule: Final totalUnits:', totalUnits, 'totalHours:', totalHours);
 
     return { 
       totalUnits, 
       totalHours: Math.round(totalHours * 10) / 10, 
       subjectSummary: Object.values(subjectHours)
     };
-  }, [allEvents]);
+  }, [allEvents, timeSlots]);
 
   if (authLoading || isLoading)
     return <div className="schedule-loading">Loading schedule...</div>;
