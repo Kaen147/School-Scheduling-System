@@ -2,6 +2,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { FaChartBar, FaClock, FaBook, FaFlask, FaPrint, FaUserTie } from "react-icons/fa";
+import { printTeacherSchedule } from "../utils/printUtils";
 import "./TeacherSchedule.css";
 
 function TeacherSchedule({ teacherId: propTeacherId, hideControls = false }) {
@@ -54,8 +55,21 @@ function TeacherSchedule({ teacherId: propTeacherId, hideControls = false }) {
     return `${minutes}m`;
   };
 
-  const printButton = () => {
-    window.print();
+  const printButton = async () => {
+    const teacherName = teacherInfo 
+      ? `${teacherInfo.firstName || ''} ${teacherInfo.lastName || ''}` 
+      : 'Teacher Schedule';
+    
+    const currentDate = new Date().toLocaleDateString('en-US', { 
+      year: 'numeric', month: 'long', day: 'numeric' 
+    });
+    
+    await printTeacherSchedule({
+      teacherName,
+      totalUnits,
+      totalHours,
+      currentDate
+    });
   };
 
   useEffect(() => {

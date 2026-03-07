@@ -8,6 +8,7 @@ import SaveScheduleModal from '../components/modals/timetable/SaveScheduleModal'
 import DeleteEventModal from '../components/modals/timetable/DeleteEventModal';
 import ValidationModals from '../components/modals/timetable/ValidationModals';
 import { showTimetableInstructions } from '../components/modals/TimetableInstructionsModal';
+import { printClassSchedule } from '../utils/printUtils';
 
 const WeeklyTimetable = (props) => {
   // Modal state for ScheduleEventModal
@@ -710,6 +711,22 @@ const WeeklyTimetable = (props) => {
     navigate(-1);
   };
 
+  const handlePrint = async () => {
+    const currentDate = new Date().toLocaleDateString('en-US', { 
+      year: 'numeric', month: 'long', day: 'numeric' 
+    });
+    
+    const academicYear = scheduleInfo?.academicYear || `${new Date().getFullYear()}-${new Date().getFullYear() + 1}`;
+    
+    await printClassSchedule({
+      scheduleInfo,
+      academicYear,
+      currentDate,
+      getYearSuffix,
+      getSemesterSuffix
+    });
+  };
+
   const formatEndTime = (endTime) => {
     const timeSlots = getTimeSlots();
     const slot = timeSlots.find(s => s.timeKey === endTime);
@@ -830,7 +847,7 @@ const WeeklyTimetable = (props) => {
               </button>
               <button
                 className="action-btn secondary"
-                onClick={() => window.print()}
+                onClick={handlePrint}
               >
                 Print
               </button>
