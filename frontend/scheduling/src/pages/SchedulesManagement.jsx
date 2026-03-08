@@ -32,7 +32,6 @@ function SchedulesManagement() {
   });
   const [courses, setCourses] = useState([]);
   const [showRecycler, setShowRecycler] = useState(false);
-  const [recyclerTarget, setRecyclerTarget] = useState({ academicYear: "", semester: "" });
 
   useEffect(() => {
     fetchSchedules();
@@ -114,46 +113,8 @@ function SchedulesManagement() {
     });
   };
 
-  const openRecycler = async () => {
-    const { value: formValues } = await Swal.fire({
-      title: 'Recycle Schedule',
-      html: `
-        <div style="text-align: left;">
-          <label style="display: block; margin-bottom: 10px;">
-            <strong>Target Academic Year:</strong>
-            <input type="text" id="academicYear" placeholder="e.g., 2024-2025" 
-                   style="width: 100%; padding: 8px; margin-top: 5px; border: 1px solid #ddd; border-radius: 4px;">
-          </label>
-          <label style="display: block; margin-bottom: 10px;">
-            <strong>Target Semester:</strong>
-            <select id="semester" style="width: 100%; padding: 8px; margin-top: 5px; border: 1px solid #ddd; border-radius: 4px;">
-              <option value="1">1st Semester</option>
-              <option value="2">2nd Semester</option>
-            </select>
-          </label>
-        </div>
-      `,
-      focusConfirm: false,
-      showCancelButton: true,
-      confirmButtonText: 'Continue',
-      cancelButtonText: 'Cancel',
-      preConfirm: () => {
-        const academicYear = document.getElementById('academicYear').value;
-        const semester = document.getElementById('semester').value;
-        
-        if (!academicYear) {
-          Swal.showValidationMessage('Please enter an academic year');
-          return false;
-        }
-        
-        return { academicYear, semester };
-      }
-    });
-
-    if (formValues) {
-      setRecyclerTarget(formValues);
-      setShowRecycler(true);
-    }
+  const openRecycler = () => {
+    setShowRecycler(true);
   };
 
   const handleRecyclerSuccess = (data) => {
@@ -772,8 +733,6 @@ function SchedulesManagement() {
         show={showRecycler}
         onClose={() => setShowRecycler(false)}
         onSuccess={handleRecyclerSuccess}
-        targetAcademicYear={recyclerTarget.academicYear}
-        targetSemester={recyclerTarget.semester}
       />
     </div>
   );
