@@ -150,7 +150,7 @@ function TeacherSchedule({ teacherId: propTeacherId, hideControls = false }) {
         if (dayIndex !== -1) {
           // Calculate positioning to center on time lines
           const duration = endIndex - startIndex;
-          const heightInPixels = duration * 24; // 24px per time slot
+          const heightInPixels = duration * 36; // 36px per time slot (matches row height)
           
           const eventData = {
             ...event,
@@ -367,10 +367,10 @@ function TeacherSchedule({ teacherId: propTeacherId, hideControls = false }) {
                       >
                         {eventData && eventData !== 'occupied' ? (
                           <div
-                            className={`event-card ${eventData.sessionType === 'lab' ? 'lab' : ''}`}
+                            className="event-card"
                             style={{
                               position: 'absolute',
-                              top: `${-18}px`, // Center on the time line (adjusted for 36px rows)
+                              top: '-18px',
                               left: '4px',
                               right: '4px',
                               height: `${eventData.heightInPixels}px`,
@@ -378,99 +378,41 @@ function TeacherSchedule({ teacherId: propTeacherId, hideControls = false }) {
                               border: `2px solid ${eventData.sessionType === 'lab' ? '#F59E0B' : '#2563EB'}`,
                               borderRadius: '6px',
                               padding: '8px 6px',
-                              marginTop: '33px', // Add margin to properly center on time lines (adjusted for 36px rows)
+                              marginTop: '33px',
                               display: 'flex',
                               flexDirection: 'column',
                               justifyContent: 'center',
                               alignItems: 'center',
                               zIndex: 10,
                               boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
-                              fontSize: eventData.heightInPixels < 60 ? '10px' : '12px',
                               textAlign: 'center',
                               overflow: 'hidden'
                             }}
-                            title={`${eventData.subjectCode} - ${eventData.subjectName}\n${formatTime(eventData.startTime)} - ${formatTime(eventData.endTime)}\n${eventData.assignedTeacher?.teacherName || 'No teacher'}\n${eventData.room || 'No room'}`}
                           >
-                            {/* Very short cards (< 72px): Icon + Code + Subject Name + Room */}
-                            {eventData.heightInPixels < 72 ? (
-                              <>
-                                <div style={{ fontWeight: 'bold', fontSize: '12px', display: 'flex', alignItems: 'center', gap: '4px', justifyContent: 'center' }}>
-                                  {eventData.sessionType === 'lab' ? <FaFlask size={11} /> : <FaBook size={11} />}
-                                  {eventData.subjectCode}
-                                </div>
-                                <div style={{ fontSize: '10px', marginTop: '2px' }}>
-                                  {eventData.subjectName}
-                                </div>
-                                {eventData.room && (
-                                  <div style={{ fontSize: '9px', color: '#6B7280', marginTop: '2px' }}>
-                                    {eventData.room}
-                                  </div>
-                                )}
-                              </>
-                            ) : eventData.heightInPixels < 108 ? (
-                              /* Short cards (72-108px): Code + Subject Name + Time + Room */
-                              <>
-                                <div style={{ fontWeight: 'bold', fontSize: '12px', display: 'flex', alignItems: 'center', gap: '4px', justifyContent: 'center' }}>
-                                  {eventData.sessionType === 'lab' ? <FaFlask size={12} /> : <FaBook size={12} />}
-                                  {eventData.subjectCode}
-                                </div>
-                                <div style={{ fontSize: '11px', marginTop: '2px' }}>
-                                  {eventData.subjectName}
-                                </div>
-                                <div style={{ fontSize: '10px', color: '#6B7280', marginTop: '2px' }}>
-                                  {formatTime(eventData.startTime)} - {formatTime(eventData.endTime)}
-                                </div>
-                                {eventData.room && (
-                                  <div style={{ fontSize: '9px', color: '#6B7280' }}>
-                                    {eventData.room}
-                                  </div>
-                                )}
-                              </>
-                            ) : eventData.heightInPixels < 144 ? (
-                              /* Medium cards (108-144px): Code + Subject Name + Time + Room */
-                              <>
-                                <div style={{ fontWeight: 'bold', fontSize: '11px', display: 'flex', alignItems: 'center', gap: '4px', justifyContent: 'center' }}>
-                                  {eventData.sessionType === 'lab' ? <FaFlask size={11} /> : <FaBook size={11} />}
-                                  {eventData.courseAbbreviation} - {eventData.subjectCode}
-                                </div>
-                                <div style={{ fontSize: '10px', color: '#6B7280', marginTop: '2px' }}>
-                                  {formatTime(eventData.startTime)} - {formatTime(eventData.endTime)}
-                                </div>
-                                {eventData.room && (
-                                  <div style={{ fontSize: '9px', color: '#6B7280' }}>
-                                    {eventData.room}
-                                  </div>
-                                )}
-                              </>
-                            ) : (
-                              /* Tall cards (> 96px): Full details */
-                              <>
-                                <div style={{ fontWeight: 'bold', fontSize: '12px', display: 'flex', alignItems: 'center', gap: '4px', justifyContent: 'center' }}>
-                                  {eventData.sessionType === 'lab' ? <FaFlask /> : <FaBook />} {eventData.courseAbbreviation} - {eventData.subjectCode}
-                                </div>
-                                <div style={{ fontSize: '11px', marginTop: '2px' }}>
-                                  {eventData.subjectName}
-                                </div>
-                                <div style={{ fontSize: '10px', color: '#059669', marginTop: '2px', fontWeight: '600', display: 'flex', alignItems: 'center', gap: '4px', justifyContent: 'center' }}>
-                                  <FaUserTie /> {eventData.assignedTeacher?.teacherName || 'No teacher assigned'}
-                                </div>
-                                <div style={{ 
-                                  fontSize: '10px', 
-                                  color: eventData.sessionType === 'lab' ? '#92400E' : '#1E40AF',
-                                  fontWeight: '600',
-                                  marginTop: '2px',
-                                  textTransform: 'uppercase'
-                                }}>
-                                  {eventData.sessionType || 'lecture'}
-                                </div>
-                                <div style={{ fontSize: '10px', color: '#6B7280', marginTop: '2px' }}>
-                                  {formatTime(eventData.startTime)} - {formatTime(eventData.endTime)}
-                                </div>
-                                <div style={{ fontSize: '9px', color: '#6B7280' }}>
-                                  {calculateDuration(eventData.startTime, eventData.endTime)} {eventData.room && `• ${eventData.room}`}
-                                </div>
-                              </>
-                            )}
+                            <div style={{ fontWeight: 'bold', fontSize: '12px' }}>
+                              {eventData.sessionType === 'lab' ? '🧪' : '📚'} {eventData.courseAbbreviation} - {eventData.subjectCode}
+                            </div>
+                            <div style={{ fontSize: '11px', marginTop: '2px' }}>
+                              {eventData.subjectName}
+                            </div>
+                            <div style={{ fontSize: '10px', color: '#059669', marginTop: '2px', fontWeight: '600' }}>
+                              👨‍🏫 {eventData.assignedTeacher?.teacherName || 'No teacher assigned'}
+                            </div>
+                            <div style={{ 
+                              fontSize: '10px', 
+                              color: eventData.sessionType === 'lab' ? '#92400E' : '#1E40AF',
+                              fontWeight: '600',
+                              marginTop: '2px',
+                              textTransform: 'uppercase'
+                            }}>
+                              {eventData.sessionType || 'lecture'}
+                            </div>
+                            <div style={{ fontSize: '10px', color: '#6B7280', marginTop: '2px' }}>
+                              {formatTime(eventData.startTime)} - {formatTime(eventData.endTime)}
+                            </div>
+                            <div style={{ fontSize: '9px', color: '#6B7280' }}>
+                              {calculateDuration(eventData.startTime, eventData.endTime)} {eventData.room && `• ${eventData.room}`}
+                            </div>
                           </div>
                         ) : null}
                       </td>

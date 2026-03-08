@@ -151,7 +151,7 @@ export const printTeacherSchedule = async ({ teacherName, totalUnits, totalHours
     <div style="flex: 1; text-align: right;">
       <div style="margin-bottom: 25px;">
         <div style="color: #6b7280; margin-bottom: 2px;">Approved by:</div>
-        <div style="width: 100px; border-bottom: 1px solid #000; margin-left: auto; margin-bottom: 2px; margin-top: 35px;"></div>
+        <div style="width: 100px; border-bottom: 1px solid #000; margin-left: auto; margin-bottom: 2px; margin-top: 20px;"></div>
         <div style="color: #374151; font-size: 6px;">Academic Dean</div>
       </div>
     </div>
