@@ -376,8 +376,8 @@ function RoomModal({ onClose, onSave, room }) {
               />
             </div>
 
-            {/* Notes */}
-            <div className="form-group">
+            {/* Notes - Commented out since no display*/} 
+            {/* <div className="form-group">
               <label className="form-label">Notes (Optional)</label>
               <textarea 
                 className="form-input" 
@@ -387,7 +387,7 @@ function RoomModal({ onClose, onSave, room }) {
                 rows="3"
                 style={{ resize: 'vertical' }}
               />
-            </div>
+            </div> */}
 
             {/* Status */}
             <div className="form-group">
