@@ -12,6 +12,7 @@ import courseRoutes from "./routes/courseRoutes.js";
 import scheduleRoutes from "./routes/scheduleRoutes.js";
 import subjectOfferingRoutes from "./routes/subjectOfferingRoutes.js";
 import workloadRoutes from "./routes/workloadRoutes.js";
+import adminRoutes from "./routes/adminRoutes.js";
 
 dotenv.config();
 
@@ -57,6 +58,7 @@ app.use("/api/courses", courseRoutes);
 app.use("/api/schedules", scheduleRoutes);
 app.use("/api/rooms", roomRoutes);
 app.use("/api/workload", workloadRoutes);
+app.use("/api/admin", adminRoutes);
 
 // optional: basic health check
 app.get("/", (req, res) => res.send("API running"));

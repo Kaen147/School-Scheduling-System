@@ -1,4 +1,5 @@
 import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
 import User from '../models/userModel.js';
 
 // Get all users
@@ -276,6 +277,13 @@ export const loginUser = async (req, res) => {
       return res.status(400).json({ message: "Invalid credentials" });
     }
 
+    // Generate JWT token
+    const token = jwt.sign(
+      { id: user._id, role: user.role },
+      process.env.JWT_SECRET,
+      { expiresIn: '7d' }
+    );
+
     // Prepare response
     const responseUser = {
       id: user._id,
@@ -297,6 +305,7 @@ export const loginUser = async (req, res) => {
 
     res.status(200).json({
       message: "Login successful",
+      token,
       user: responseUser
     });
 
