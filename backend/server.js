@@ -72,4 +72,9 @@ mongoose
   })
   .catch((error) => {
     console.error("DB connection error:", error);
+    console.error("MONGODB_URI:", MONGODBURL ? "Set" : "Not set");
+    // Start server anyway for debugging
+    app.listen(PORT, () => {
+      console.log(`server is running on ${PORT} (without database)`);
+    });
   });
