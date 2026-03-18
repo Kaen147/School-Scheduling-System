@@ -28,8 +28,8 @@ router.post('/wipe-db', authenticate, isAdmin, async (req, res) => {
   }
 });
 
-// Seed database endpoint - admin only
-router.post('/seed-db', authenticate, isAdmin, async (req, res) => {
+// Seed database endpoint - no auth required (for initial setup)
+router.post('/seed-db', async (req, res) => {
   try {
     const User = (await import('../models/userModel.js')).default;
     const userCount = await User.countDocuments();
