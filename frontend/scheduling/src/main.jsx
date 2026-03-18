@@ -8,6 +8,7 @@ createRoot(document.getElementById('root')).render(
   <StrictMode>
     <BrowserRouter> {/* ✅ Wrap App with Router */}
       <App />
+      <Analytics />
     </BrowserRouter>
   </StrictMode>
 );
